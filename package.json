@@ -10,7 +10,9 @@
   "engines": {
     "node": ">=18.18.0"
   },
-  "bin": "lib/index.js",
+  "bin": {
+    "lint-pilot": "./lib/index.js"
+  },
   "files": [
     "lib"
   ],
