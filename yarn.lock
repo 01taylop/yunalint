@@ -5609,7 +5609,7 @@ __metadata:
     tsx: "npm:4.19.0"
     typescript: "npm:5.5.4"
   bin:
-    lint-pilot: lib/index.js
+    lint-pilot: ./lib/index.js
   languageName: unknown
   linkType: soft
 

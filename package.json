@@ -10,7 +10,9 @@
   "engines": {
     "node": ">=18.18.0"
   },
-  "bin": "lib/index.js",
+  "bin": {
+    "lint-pilot": "./lib/index.js"
+  },
   "files": [
     "lib"
   ],
@@ -19,7 +21,7 @@
     "lint": "tsx src/index.js --ignore-dirs lib",
     "prepublishOnly": "yarn test --coverage && yarn build",
     "release": "changeset publish",
-    "test": "jest src/"
+    "test": "jest"
   },
   "dependencies": {
     "@stylistic/stylelint-plugin": "3.0.1",

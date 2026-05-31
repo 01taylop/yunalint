@@ -4,10 +4,7 @@ const config: Config = {
   clearMocks: true,
   collectCoverageFrom: [
     'src/**/*',
-    '!src/**/*.d.ts',
-    '!src/(index|program).ts',
-    '!src/linters/**/index.ts',
-    '!src/types/index.ts',
+    '!src/index.ts',
   ],
   coverageDirectory: 'coverage',
   coverageThreshold: {
@@ -20,6 +17,7 @@ const config: Config = {
   },
   moduleNameMapper: {
     '^@Jest(.*)$': '<rootDir>/jest-config$1',
+    '^@Linters(.*)$': '<rootDir>/src/linters$1',
     '^@Types(.*)$': '<rootDir>/src/types$1',
     '^@Utils(.*)$': '<rootDir>/src/utils$1',
   },

@@ -7,7 +7,7 @@
     "noEmit": true,
     "paths": {
       "@Jest/*": ["./jest-config/*"],
-      "@Types": ["./src/types/index.ts"],
+      "@Linters/*": ["./src/linters/*"],
       "@Types/*": ["./src/types/*"],
       "@Utils/*": ["./src/utils/*"],
     },
@@ -15,7 +15,8 @@
     "rootDir": "./",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "types": ["jest", "node"]
   },
   "include": [
     "config/**/*",
