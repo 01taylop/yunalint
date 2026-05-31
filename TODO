@@ -1,5 +1,8 @@
 # TODO
 
+- [ ] Integration tests
+  - [ ] Update .github/workflows/test.yml
+
 ## ESLint Rules
 
 - [ ] [eslint](https://github.com/eslint/eslint/tree/main)
