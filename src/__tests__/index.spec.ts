@@ -35,13 +35,13 @@ describe('index - CLI integration', () => {
       cache: false,
       clearCache: false,
       debug: false,
-      emoji: '✈️',
+      emoji: '🌺',
       eslintInclude: undefined,
       eslintUseLegacyConfig: false,
       fix: false,
       ignoreDirs: undefined,
       ignorePatterns: undefined,
-      title: 'Lint Pilot',
+      title: 'Yuna',
       watch: false,
     }
 

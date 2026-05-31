@@ -7,27 +7,27 @@ import action from './action'
 const helpText = `
 Examples:
   Automatically fix problems:
-    ${chalk.gray('$ lint-pilot lint --fix')}
+    ${chalk.gray('$ yuna lint --fix')}
   Watch for file changes and re-run the linters:
-    ${chalk.gray('$ lint-pilot lint --watch')}
+    ${chalk.gray('$ yuna lint --watch')}
   Customise the emoji and title:
-    ${chalk.gray('$ lint-pilot lint -e 🚀 -t "Rocket Lint"')}
+    ${chalk.gray('$ yuna lint -e 🚀 -t "Rocket Lint"')}
   Enable caching for faster linting:
-    ${chalk.gray('$ lint-pilot lint --cache')}
+    ${chalk.gray('$ yuna lint --cache')}
   Clear the cache:
-    ${chalk.gray('$ lint-pilot lint --clear-cache')}
+    ${chalk.gray('$ yuna lint --clear-cache')}
   Ignore specific directories:
-    ${chalk.gray('$ lint-pilot lint --ignore-dirs generated')}
+    ${chalk.gray('$ yuna lint --ignore-dirs generated')}
   Ignore specific file patterns:
-    ${chalk.gray('$ lint-pilot lint --ignore-patterns "*.cjs"')}
+    ${chalk.gray('$ yuna lint --ignore-patterns "*.cjs"')}
   Include additional file patterns for ESLint:
-    ${chalk.gray('$ lint-pilot lint --eslint-include "**/*.mdx"')}
+    ${chalk.gray('$ yuna lint --eslint-include "**/*.mdx"')}
   Output debug information (e.g., configuration details, error stacks, file paths):
-    ${chalk.gray('$ lint-pilot lint --debug')}
+    ${chalk.gray('$ yuna lint --debug')}
   Use legacy ESLint config:
-    ${chalk.gray('$ lint-pilot lint --eslint-use-legacy-config')}
+    ${chalk.gray('$ yuna lint --eslint-use-legacy-config')}
   Run all linters with caching, fixing, and watching for changes:
-    ${chalk.gray('$ lint-pilot lint --cache --fix --watch')}`
+    ${chalk.gray('$ yuna lint --cache --fix --watch')}`
 
 const command = (program: Command, supervisor: ProcessSupervisor) => {
   program
@@ -40,8 +40,8 @@ const command = (program: Command, supervisor: ProcessSupervisor) => {
     .option('-w, --watch', 'watch for file changes and re-run the linters', false)
 
     // Customisation Options
-    .option('-e, --emoji <string>', 'customise the emoji displayed when running lint-pilot', '✈️')
-    .option('-t, --title <string>', 'customise the title displayed when running lint-pilot', 'Lint Pilot')
+    .option('-e, --emoji <string>', 'customise the emoji displayed when running yuna', '🌺')
+    .option('-t, --title <string>', 'customise the title displayed when running yuna', 'Yuna')
 
     // Caching Options
     .option('--cache', 'cache linting results', false)
@@ -60,7 +60,7 @@ const command = (program: Command, supervisor: ProcessSupervisor) => {
 
     .addHelpText('before', 'Command: lint')
     .addHelpText('after', helpText)
-    .showHelpAfterError(`\n💡 Run \`lint-pilot lint --help\` for more information.`)
+    .showHelpAfterError(`\n💡 Run \`yuna lint --help\` for more information.`)
 }
 
 export default command

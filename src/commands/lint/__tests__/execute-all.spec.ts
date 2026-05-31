@@ -24,7 +24,7 @@ describe('executeAllLinters', () => {
       ignorePatterns: ['**/node_modules/**'],
     },
     fix: false,
-    title: 'Lint Pilot',
+    title: 'Yuna',
     watch: false,
   }
 

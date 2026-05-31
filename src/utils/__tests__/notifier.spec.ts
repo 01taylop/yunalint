@@ -30,7 +30,7 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(1, 0),
       generateReport(0, 1),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(exitCode).toBe(1)
   })
@@ -40,7 +40,7 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(0, 0),
       generateReport(0, 1),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(exitCode).toBe(0)
   })
@@ -49,7 +49,7 @@ describe('notifyResults', () => {
     const exitCode = notifyResults([
       generateReport(0, 0),
       generateReport(0, 0),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(exitCode).toBe(0)
   })
@@ -59,12 +59,12 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(1, 1),
       generateReport(0, 1),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
       message: '1 error found. Please fix it before continuing.',
       sound: 'Frog',
-      title: '🚨 Lint Pilot',
+      title: '🚨 Yuna',
     })
   })
 
@@ -73,12 +73,12 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(5, 0),
       generateReport(2, 1),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
       message: '7 errors found. Please fix them before continuing.',
       sound: 'Frog',
-      title: '🚨 Lint Pilot',
+      title: '🚨 Yuna',
     })
   })
 
@@ -87,12 +87,12 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(0, 0),
       generateReport(0, 1),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
       message: '1 warning found. Please review before continuing.',
       sound: 'Frog',
-      title: '⚠️ Lint Pilot',
+      title: '⚠️ Yuna',
     })
   })
 
@@ -101,12 +101,12 @@ describe('notifyResults', () => {
       generateReport(0, 0),
       generateReport(0, 7),
       generateReport(0, 2),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
       message: '9 warnings found. Please review them before continuing.',
       sound: 'Frog',
-      title: '⚠️ Lint Pilot',
+      title: '⚠️ Yuna',
     })
   })
 
@@ -114,12 +114,12 @@ describe('notifyResults', () => {
     notifyResults([
       generateReport(0, 0),
       generateReport(0, 0),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
       message: 'All lint checks have passed. Your code is clean!',
       sound: 'Purr',
-      title: '✅ Lint Pilot',
+      title: '✅ Yuna',
     })
   })
 
@@ -131,7 +131,7 @@ describe('notifyResults', () => {
     const exitCode = notifyResults([
       generateReport(0, 0),
       generateReport(0, 0),
-    ], 'Lint Pilot')
+    ], 'Yuna')
 
     expect(exitCode).toBe(0)
   })

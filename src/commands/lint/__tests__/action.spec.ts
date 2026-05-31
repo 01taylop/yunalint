@@ -32,13 +32,13 @@ describe('lint action', () => {
     cache: false,
     clearCache: false,
     debug: false,
-    emoji: '✈️',
+    emoji: '🌺',
     eslintInclude: undefined,
     eslintUseLegacyConfig: false,
     fix: false,
     ignoreDirs: undefined,
     ignorePatterns: undefined,
-    title: 'Lint Pilot',
+    title: 'Yuna',
     watch: false,
   }
 
@@ -89,7 +89,7 @@ describe('lint action', () => {
 
       await action(supervisor, defaultOptions)
 
-      expect(colourLog.title).toHaveBeenCalledWith('✈️ Lint Pilot\n')
+      expect(colourLog.title).toHaveBeenCalledWith('🌺 Yuna\n')
     })
 
     it('logs a custom title and emoji', async () => {
@@ -155,7 +155,7 @@ describe('lint action', () => {
         eslintUseLegacyConfig: false,
         filePatterns: mockFilePatterns,
         fix: false,
-        title: 'Lint Pilot',
+        title: 'Yuna',
         watch: false,
       })
     })
@@ -175,7 +175,7 @@ describe('lint action', () => {
         eslintUseLegacyConfig: true,
         filePatterns: mockFilePatterns,
         fix: true,
-        title: 'Lint Pilot',
+        title: 'Yuna',
         watch: false,
       })
     })
