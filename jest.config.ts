@@ -4,9 +4,7 @@ const config: Config = {
   clearMocks: true,
   collectCoverageFrom: [
     'src/**/*',
-    '!src/**/*.d.ts',
-    '!src/(index|program).ts',
-    '!src/types/index.ts',
+    '!src/index.ts',
   ],
   coverageDirectory: 'coverage',
   coverageThreshold: {

@@ -1,21 +1,24 @@
+import chalk from 'chalk'
 import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
-import { clearCacheDirectory } from '@Utils/cache'
-import colourLog from '@Utils/colour-log'
-import { clearTerminal } from '@Utils/terminal'
-
-import { getFilePatterns } from '@Utils/file-patterns'
-import { EVENTS, fileWatcherEvents, watchFiles } from '@Utils/watch-files'
-
 import { description, name, version } from '../package.json'
-import { executeAllLinters } from './commands/lint/execute-all'
-
-import type { FileChangedEventPayload } from '@Utils/watch-files'
+import { lintCommand } from './commands'
 
 interface CreateProgramOptions {
   supervisor: ProcessSupervisor
 }
+
+const helpText = `
+Examples:
+  Run all linters (default command):
+    ${chalk.gray('$ lint-pilot')}
+  Run all linters (explicitly):
+    ${chalk.gray('$ lint-pilot lint')}
+  Automatically fix problems and watch for changes:
+    ${chalk.gray('$ lint-pilot --fix --watch')}
+  Enable caching for faster linting:
+    ${chalk.gray('$ lint-pilot --cache --fix --watch')}`
 
 const createProgram = ({ supervisor }: CreateProgramOptions): Command => {
   const program = new Command()
@@ -24,74 +27,14 @@ const createProgram = ({ supervisor }: CreateProgramOptions): Command => {
     .name(name)
     .description(description)
     .version(version)
-    .addHelpText('beforeAll', '\n✈️ Lint Pilot ✈️\n')
-    .showHelpAfterError('\n💡 Run `lint-pilot --help` for more information.\n')
 
-    // Core Behaviour Options
-    .option('--fix', 'automatically fix problems', false)
-    .option('-w, --watch', 'watch for file changes and re-run the linters', false)
-
-    // Customisation Options
-    .option('-e, --emoji <string>', 'customise the emoji displayed when running lint-pilot', '✈️')
-    .option('-t, --title <string>', 'customise the title displayed when running lint-pilot', 'Lint Pilot')
-
-    // Caching Options
-    .option('--cache', 'cache linting results', false)
-    .option('--clear-cache', 'clear the cache', false)
-
-    // Ignore and Include Options
-    .option('--ignore-dirs <directories...>', 'define directories to ignore')
-    .option('--ignore-patterns <patterns...>', 'define file patterns to ignore')
-    .option('--eslint-include <patterns...>', 'define additional file patterns for ESLint')
-
-    // Debugging and Legacy Options
-    .option('--debug', 'output additional debug information', false)
-    .option('--eslint-use-legacy-config', 'use legacy ESLint config', false)
-
-    .action(({ cache, clearCache, debug, emoji, eslintInclude, eslintUseLegacyConfig, fix, ignoreDirs, ignorePatterns, title, watch }) => {
-      global.debug = debug
-
-      clearTerminal()
-      colourLog.title(`${emoji} ${title}\n`)
-
-      if (clearCache) {
-        clearCacheDirectory()
-      }
-
-      const filePatterns = getFilePatterns({
-        eslintInclude,
-        ignoreDirs,
-        ignorePatterns,
-      })
-
-      const lintOptions = {
-        cache,
-        eslintUseLegacyConfig,
-        filePatterns,
-        fix,
-        title,
-        watch,
-      }
-
-      executeAllLinters(lintOptions)
-
-      if (watch) {
-        supervisor.register('file-watcher', {
-          start: () => watchFiles(filePatterns),
-          stop: async watcher => {
-            await watcher.close()
-          },
-        })
-        supervisor.start('file-watcher')
-
-        fileWatcherEvents.on(EVENTS.FILE_CHANGED, ({ message }: FileChangedEventPayload) => {
-          clearTerminal()
-          colourLog.info(message)
-          console.log()
-          executeAllLinters(lintOptions)
-        })
-      }
+    .addHelpText('beforeAll', '\n✈️ Lint Pilot\n')
+    .addHelpText('after', helpText)
+    .configureOutput({
+      outputError: (str, write) => write(chalk.red(`\n× ${str.replace(/^error: /i, '')}`)),
     })
+
+  lintCommand(program, supervisor)
 
   return program
 }
