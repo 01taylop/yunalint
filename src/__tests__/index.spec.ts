@@ -35,7 +35,7 @@ describe('index - CLI integration', () => {
       cache: false,
       clearCache: false,
       debug: false,
-      emoji: '🌸',
+      emoji: '🌺',
       eslintInclude: undefined,
       eslintUseLegacyConfig: false,
       fix: false,

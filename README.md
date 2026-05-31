@@ -1,4 +1,4 @@
-# 🌸 Yuna
+# 🌺 Yuna
 
 [![Test](https://github.com/01taylop/yunalint/actions/workflows/test.yml/badge.svg)](https://github.com/01taylop/yunalint/actions/workflows/test.yml)
 

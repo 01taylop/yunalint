@@ -40,7 +40,7 @@ const command = (program: Command, supervisor: ProcessSupervisor) => {
     .option('-w, --watch', 'watch for file changes and re-run the linters', false)
 
     // Customisation Options
-    .option('-e, --emoji <string>', 'customise the emoji displayed when running yuna', '🌸')
+    .option('-e, --emoji <string>', 'customise the emoji displayed when running yuna', '🌺')
     .option('-t, --title <string>', 'customise the title displayed when running yuna', 'Yuna')
 
     // Caching Options

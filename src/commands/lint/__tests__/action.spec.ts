@@ -32,7 +32,7 @@ describe('lint action', () => {
     cache: false,
     clearCache: false,
     debug: false,
-    emoji: '🌸',
+    emoji: '🌺',
     eslintInclude: undefined,
     eslintUseLegacyConfig: false,
     fix: false,
@@ -89,7 +89,7 @@ describe('lint action', () => {
 
       await action(supervisor, defaultOptions)
 
-      expect(colourLog.title).toHaveBeenCalledWith('🌸 Yuna\n')
+      expect(colourLog.title).toHaveBeenCalledWith('🌺 Yuna\n')
     })
 
     it('logs a custom title and emoji', async () => {

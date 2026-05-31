@@ -28,7 +28,7 @@ const createProgram = ({ supervisor }: CreateProgramOptions): Command => {
     .description(description)
     .version(version)
 
-    .addHelpText('beforeAll', '\n🌸 Yuna\n')
+    .addHelpText('beforeAll', '\n🌺 Yuna\n')
     .addHelpText('after', helpText)
     .configureOutput({
       outputError: (str, write) => write(chalk.red(`\n× ${str.replace(/^error: /i, '')}`)),
