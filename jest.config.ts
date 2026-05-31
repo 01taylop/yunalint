@@ -6,7 +6,6 @@ const config: Config = {
     'src/**/*',
     '!src/**/*.d.ts',
     '!src/(index|program).ts',
-    '!src/linters/**/index.ts',
     '!src/types/index.ts',
   ],
   coverageDirectory: 'coverage',
