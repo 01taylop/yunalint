@@ -36,8 +36,8 @@ describe('lintCommand', () => {
     expect(action).toHaveBeenCalledWith(supervisor, expect.objectContaining({
       fix: false,
       watch: false,
-      emoji: '✈️',
-      title: 'Lint Pilot',
+      emoji: '🌸',
+      title: 'Yuna',
       cache: false,
       clearCache: false,
       debug: false,

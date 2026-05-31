@@ -81,7 +81,7 @@ describe('createProgram', () => {
 
     expect(chalk.red).toHaveBeenCalledOnceWith(expect.stringContaining('× unknown option \'--unknown\''))
     expect(writeErrMock).toHaveBeenNthCalledWith(1, expect.stringContaining('× unknown option \'--unknown\''))
-    expect(writeErrMock).toHaveBeenNthCalledWith(2, expect.stringContaining('\n💡 Run `lint-pilot lint --help` for more information.'))
+    expect(writeErrMock).toHaveBeenNthCalledWith(2, expect.stringContaining('\n💡 Run `yuna lint --help` for more information.'))
   })
 
   it('registers the lint command', () => {

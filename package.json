@@ -1,17 +1,17 @@
 {
-  "name": "lint-pilot",
-  "description": "Your co-pilot for maintaining high code quality with seamless ESLint, Stylelint, and Markdownlint integration.",
+  "name": "yunalint",
+  "description": "An opinionated linting orchestrator for ESLint, Stylelint, and Markdownlint.",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/01taylop/lint-pilot.git"
+    "url": "git+https://github.com/01taylop/yunalint.git"
   },
   "type": "module",
   "engines": {
     "node": ">=18.18.0"
   },
   "bin": {
-    "lint-pilot": "./lib/index.js"
+    "yuna": "./lib/index.js"
   },
   "files": [
     "lib"

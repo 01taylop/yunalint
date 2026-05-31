@@ -12,13 +12,13 @@ interface CreateProgramOptions {
 const helpText = `
 Examples:
   Run all linters (default command):
-    ${chalk.gray('$ lint-pilot')}
+    ${chalk.gray('$ yuna')}
   Run all linters (explicitly):
-    ${chalk.gray('$ lint-pilot lint')}
+    ${chalk.gray('$ yuna lint')}
   Automatically fix problems and watch for changes:
-    ${chalk.gray('$ lint-pilot --fix --watch')}
+    ${chalk.gray('$ yuna --fix --watch')}
   Enable caching for faster linting:
-    ${chalk.gray('$ lint-pilot --cache --fix --watch')}`
+    ${chalk.gray('$ yuna --cache --fix --watch')}`
 
 const createProgram = ({ supervisor }: CreateProgramOptions): Command => {
   const program = new Command()
@@ -28,7 +28,7 @@ const createProgram = ({ supervisor }: CreateProgramOptions): Command => {
     .description(description)
     .version(version)
 
-    .addHelpText('beforeAll', '\n✈️ Lint Pilot\n')
+    .addHelpText('beforeAll', '\n🌸 Yuna\n')
     .addHelpText('after', helpText)
     .configureOutput({
       outputError: (str, write) => write(chalk.red(`\n× ${str.replace(/^error: /i, '')}`)),
