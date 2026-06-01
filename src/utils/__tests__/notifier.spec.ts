@@ -1,10 +1,9 @@
 import notifier from 'node-notifier'
 
+import { generateLintReport } from '@Jest/fixtures'
 import { Linter } from '@Types/lint'
 
 import { notifyResults } from '../notifier'
-
-import type { LintReport } from '@Types/lint'
 
 jest.mock('node-notifier', () => ({
   notify: jest.fn(),
@@ -12,24 +11,11 @@ jest.mock('node-notifier', () => ({
 
 describe('notifyResults', () => {
 
-  const generateReport = (errorCount = 0, warningCount = 0): LintReport => ({
-    results: {},
-    summary: {
-      deprecatedRules: [],
-      errorCount,
-      fileCount: 0,
-      fixableErrorCount: 0,
-      fixableWarningCount: 0,
-      linter: Linter.ESLint,
-      warningCount,
-    },
-  })
-
   it('returns an exit code of 1 if there are errors', () => {
     const exitCode = notifyResults([
-      generateReport(0, 0),
-      generateReport(1, 0),
-      generateReport(0, 1),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint, { errorCount: 1 }),
+      generateLintReport(Linter.Stylelint, { warningCount: 1 }),
     ], 'Yuna')
 
     expect(exitCode).toBe(1)
@@ -37,9 +23,9 @@ describe('notifyResults', () => {
 
   it('returns an exit code of 0 if there are no errors, but there are warnings', () => {
     const exitCode = notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 0),
-      generateReport(0, 1),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint),
+      generateLintReport(Linter.Stylelint, { warningCount: 1 }),
     ], 'Yuna')
 
     expect(exitCode).toBe(0)
@@ -47,8 +33,9 @@ describe('notifyResults', () => {
 
   it('returns an exit code of 0 if there are no errors or warnings', () => {
     const exitCode = notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 0),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint),
+      generateLintReport(Linter.Stylelint),
     ], 'Yuna')
 
     expect(exitCode).toBe(0)
@@ -56,9 +43,9 @@ describe('notifyResults', () => {
 
   it('notifies when there is a single error', () => {
     notifyResults([
-      generateReport(0, 0),
-      generateReport(1, 1),
-      generateReport(0, 1),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint, { errorCount: 1, warningCount: 1 }),
+      generateLintReport(Linter.Stylelint, { warningCount: 1 }),
     ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
@@ -70,9 +57,9 @@ describe('notifyResults', () => {
 
   it('notifies when there are multiple errors', () => {
     notifyResults([
-      generateReport(0, 0),
-      generateReport(5, 0),
-      generateReport(2, 1),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint, { errorCount: 5 }),
+      generateLintReport(Linter.Stylelint, { errorCount: 2, warningCount: 1 }),
     ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
@@ -84,9 +71,9 @@ describe('notifyResults', () => {
 
   it('notifies when there is a single warning', () => {
     notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 0),
-      generateReport(0, 1),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint),
+      generateLintReport(Linter.Stylelint, { warningCount: 1 }),
     ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
@@ -98,9 +85,9 @@ describe('notifyResults', () => {
 
   it('notifies when there are multiple warnings', () => {
     notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 7),
-      generateReport(0, 2),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint, { warningCount: 7 }),
+      generateLintReport(Linter.Stylelint, { warningCount: 2 }),
     ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
@@ -112,8 +99,9 @@ describe('notifyResults', () => {
 
   it('notifies when there are no errors or warnings', () => {
     notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 0),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint),
+      generateLintReport(Linter.Stylelint),
     ], 'Yuna')
 
     expect(notifier.notify).toHaveBeenCalledOnceWith({
@@ -129,8 +117,9 @@ describe('notifyResults', () => {
     })
 
     const exitCode = notifyResults([
-      generateReport(0, 0),
-      generateReport(0, 0),
+      generateLintReport(Linter.ESLint),
+      generateLintReport(Linter.Markdownlint),
+      generateLintReport(Linter.Stylelint),
     ], 'Yuna')
 
     expect(exitCode).toBe(0)

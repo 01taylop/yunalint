@@ -1,5 +1,4 @@
 {
-  "ignoreBinaries": [],
   "ignoreDependencies": [
     "@jest/globals",
     "@stylistic/stylelint-plugin",
@@ -10,7 +9,6 @@
     "stylelint-scss",
     "ts-node"
   ],
-  "ignore": [],
   "entry": [
     "config/all-legacy.ts",
     "config/all.ts",

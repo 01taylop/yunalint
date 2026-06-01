@@ -1,12 +1,5 @@
 import type { LintError } from 'markdownlint'
 
-const expectedResultThemes = {
-  messageTheme: expect.any(Function),
-  positionTheme: expect.any(Function),
-  ruleTheme: expect.any(Function),
-  severityTheme: expect.any(Function),
-}
-
 const markdownlintError: LintError = {
   errorContext: 'test-error-context',
   errorDetail: 'test-error-detail',
@@ -17,7 +10,7 @@ const markdownlintError: LintError = {
   ruleNames: ['MD000', 'test-rule-name'],
 }
 
-const fixableMarkdownlintError = {
+const fixableMarkdownlintError: LintError = {
   ...markdownlintError,
   fixInfo: {
     insertText: 'test-insert-text',
@@ -26,7 +19,6 @@ const fixableMarkdownlintError = {
 }
 
 export {
-  expectedResultThemes,
   fixableMarkdownlintError,
   markdownlintError,
 }

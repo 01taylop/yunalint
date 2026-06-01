@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { expectedResultThemes } from '@Jest/testData'
+import { expectedResultThemes } from '@Jest/fixtures'
 
 import { processResults } from '../process-results'
 

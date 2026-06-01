@@ -1,4 +1,4 @@
-import { expectedResultThemes, fixableMarkdownlintError, markdownlintError } from '@Jest/testData'
+import { expectedResultThemes, fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
 
 import { processResults } from '../process-results'
 

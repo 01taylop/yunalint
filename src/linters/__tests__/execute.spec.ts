@@ -1,3 +1,4 @@
+import { generateLintReport, mockFilePatterns } from '@Jest/fixtures'
 import { Linter } from '@Types/lint'
 import colourLog from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
@@ -19,29 +20,15 @@ describe.each([
   const commonOptions = {
     cache: false,
     eslintUseLegacyConfig: false,
-    filePatterns: {
-      includePatterns: {
-        [Linter.ESLint]: ['**/*.ts'],
-        [Linter.Markdownlint]: ['**/*.md'],
-        [Linter.Stylelint]: ['**/*.css'],
-      },
-      ignorePatterns: ['**/node_modules/**'],
-    },
+    filePatterns: mockFilePatterns,
     fix: false,
   }
 
+  const mockLintReport = generateLintReport(linter)
+
   beforeEach(() => {
     jest.mocked(sourceFiles).mockResolvedValue(['file1.ts', 'file2.ts'])
-    jest.mocked(linters[linter]).lintFiles = jest.fn().mockResolvedValue({
-      summary: {
-        linter,
-        errorCount: 0,
-        warningCount: 0,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
-      },
-      results: [],
-    })
+    jest.mocked(linters[linter]).lintFiles = jest.fn().mockResolvedValue(mockLintReport)
     jest.useFakeTimers()
   })
 
@@ -85,32 +72,15 @@ describe.each([
 
     await executeLinter(linter, commonOptions)
 
-    expect(logSummary).toHaveBeenCalledWith({
-      linter,
-      errorCount: 0,
-      warningCount: 0,
-      fixableErrorCount: 0,
-      fixableWarningCount: 0,
-    }, 1767225600000)
+    expect(logSummary).toHaveBeenCalledWith(mockLintReport.summary, 1767225600000)
   })
 
   it('returns the lint report', async () => {
     expect.assertions(1)
 
-    const expectedReport = {
-      summary: {
-        linter,
-        errorCount: 0,
-        warningCount: 0,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
-      },
-      results: [],
-    }
-
     const report = await executeLinter(linter, commonOptions)
 
-    expect(report).toStrictEqual(expectedReport)
+    expect(report).toStrictEqual(mockLintReport)
   })
 
 })

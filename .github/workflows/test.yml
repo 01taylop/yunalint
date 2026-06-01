@@ -19,34 +19,34 @@ jobs:
         node-version: [18.18, 20.x, 22.x, 24.x, 26.x]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Enable Corepack
-      run: corepack enable
+      - name: Enable Corepack
+        run: corepack enable
 
-    - name: Install dependencies
-      run: yarn install --immutable
+      - name: Install dependencies
+        run: yarn install --immutable
 
-    - name: Type check
-      run: yarn tsc --noEmit
+      - name: Type check
+        run: yarn tsc --noEmit
 
-    - name: Unit tests
-      run: yarn test --coverage
+      - name: Unit tests
+        run: yarn test --coverage
 
-    - name: Build project
-      run: yarn build
+      - name: Build project
+        run: yarn build
 
-    - name: Run lint
-      run: yarn lint --ignore-patterns '**/*.ts'
+      - name: Run lint
+        run: yarn lint --ignore-patterns '**/*.ts'
 
-    - name: Run lint with legacy ESLint config
-      run: yarn lint --eslint-use-legacy-config --ignore-patterns '**/*.ts'
+      - name: Run lint with legacy ESLint config
+        run: yarn lint --eslint-use-legacy-config --ignore-patterns '**/*.ts'
 
-    - name: Check code quality
-      run: yarn knip
+      - name: Check code quality
+        run: yarn knip

@@ -1,6 +1,6 @@
 import markdownlint from 'markdownlint'
 
-import { markdownlintError } from '@Jest/testData'
+import { markdownlintError } from '@Jest/fixtures'
 
 import { markdownlintAsync } from '../markdownlint-async'
 
