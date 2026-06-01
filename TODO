@@ -3,6 +3,10 @@
 - [ ] Integration tests
   - [ ] Update .github/workflows/test.yml
 
+## Future
+
+- [ ] Remove `ts-node` when dropping support for Node 20
+
 ## ESLint Rules
 
 - [ ] [eslint](https://github.com/eslint/eslint/tree/main)
