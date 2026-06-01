@@ -1,4 +1,4 @@
-import { fixableMarkdownlintError, markdownlintError } from '@Jest/testData'
+import { fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
 import colourLog from '@Utils/colour-log'
 
 import { fixFile } from '../fix-file'

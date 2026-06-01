@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 
 import { applyFixes } from 'markdownlint-rule-helpers'
 
-import { markdownlintError } from '@Jest/testData'
+import { markdownlintError } from '@Jest/fixtures'
 
 import { fixFile } from '../fix-file'
 

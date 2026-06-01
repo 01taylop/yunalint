@@ -10,7 +10,6 @@
     "stylelint-scss",
     "ts-node"
   ],
-  "ignore": [],
   "entry": [
     "config/all-legacy.ts",
     "config/all.ts",

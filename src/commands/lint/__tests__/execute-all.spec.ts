@@ -1,3 +1,4 @@
+import { generateLintReport, mockFilePatterns } from '@Jest/fixtures'
 import { executeLinter } from '@Linters/execute'
 import { Linter } from '@Types/lint'
 import colourLog from '@Utils/colour-log'
@@ -15,31 +16,13 @@ describe('executeAllLinters', () => {
   const commonOptions = {
     cache: false,
     eslintUseLegacyConfig: false,
-    filePatterns: {
-      includePatterns: {
-        [Linter.ESLint]: ['**/*.ts'],
-        [Linter.Markdownlint]: ['**/*.md'],
-        [Linter.Stylelint]: ['**/*.css'],
-      },
-      ignorePatterns: ['**/node_modules/**'],
-    },
+    filePatterns: mockFilePatterns,
     fix: false,
     title: 'Yuna',
     watch: false,
   }
 
-  const mockReports = [Linter.ESLint, Linter.Markdownlint, Linter.Stylelint].map(linter => ({
-    results: {},
-    summary: {
-      deprecatedRules: [],
-      errorCount: 0,
-      fileCount: 0,
-      fixableErrorCount: 0,
-      fixableWarningCount: 0,
-      linter,
-      warningCount: 0,
-    },
-  }))
+  const mockReports = [Linter.ESLint, Linter.Markdownlint, Linter.Stylelint].map(linter => generateLintReport(linter))
 
   beforeEach(() => {
     jest.mocked(executeLinter)

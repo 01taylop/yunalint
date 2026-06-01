@@ -1,3 +1,4 @@
+import { mockFilePatterns } from '@Jest/fixtures'
 import { Linter } from '@Types/lint'
 import colourLog from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
@@ -19,14 +20,7 @@ describe.each([
   const commonOptions = {
     cache: false,
     eslintUseLegacyConfig: false,
-    filePatterns: {
-      includePatterns: {
-        [Linter.ESLint]: ['**/*.ts'],
-        [Linter.Markdownlint]: ['**/*.md'],
-        [Linter.Stylelint]: ['**/*.css'],
-      },
-      ignorePatterns: ['**/node_modules/**'],
-    },
+    filePatterns: mockFilePatterns,
     fix: false,
   }
 
