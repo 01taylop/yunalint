@@ -4,7 +4,7 @@ import { ESLint, loadESLint } from 'eslint'
 
 import colourLog from '@Utils/colour-log'
 
-import lintFiles from '../lint-files'
+import { lintFiles } from '../lint-files'
 
 jest.mock('eslint')
 

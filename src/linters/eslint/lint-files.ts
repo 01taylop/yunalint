@@ -38,4 +38,6 @@ const lintFiles = async ({ cache, eslintUseLegacyConfig, files, fix }: LintFiles
   }
 }
 
-export default lintFiles
+export {
+  lintFiles,
+}

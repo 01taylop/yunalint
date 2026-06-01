@@ -47,4 +47,6 @@ const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> 
   }
 }
 
-export default lintFiles
+export {
+  lintFiles,
+}

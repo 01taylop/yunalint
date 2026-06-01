@@ -1,9 +1,11 @@
-import lintFiles from './lint-files'
+import { lintFiles } from './lint-files'
 
 import type { LinterInterface } from '@Types/lint'
 
-const eslintAdapter: LinterInterface = {
+const eslint: LinterInterface = {
   lintFiles,
 }
 
-export default eslintAdapter
+export {
+  eslint,
+}
