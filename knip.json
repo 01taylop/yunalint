@@ -1,5 +1,4 @@
 {
-  "ignoreBinaries": [],
   "ignoreDependencies": [
     "@jest/globals",
     "@stylistic/stylelint-plugin",
