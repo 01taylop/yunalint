@@ -1,14 +1,14 @@
+import { lint } from 'markdownlint/promise'
+
 import { fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
 import colourLog from '@Utils/colour-log'
 
 import { fixFile } from '../fix-file'
 import lintFiles from '../lint-files'
 import { loadConfig } from '../load-config'
-import { markdownlintAsync } from '../markdownlint-async'
 
 jest.mock('../fix-file')
 jest.mock('../load-config')
-jest.mock('../markdownlint-async')
 
 describe('lintFiles', () => {
 
@@ -23,9 +23,9 @@ describe('lintFiles', () => {
     files: ['README.md'],
   }
 
+  const markdownlintMock = jest.mocked(lint).mockResolvedValue({ 'README.md': [] })
   const fixFileMock = jest.mocked(fixFile).mockImplementation(() => {})
-  const loadConfigMock = jest.mocked(loadConfig).mockReturnValue({ default: true })
-  const markdownlintMock = jest.mocked(markdownlintAsync).mockResolvedValue({ 'README.md': [] })
+  const loadConfigMock = jest.mocked(loadConfig).mockResolvedValue({ default: true })
 
   it('lints files once when `fix` is false', async () => {
     expect.assertions(3)

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 
-import { applyFixes } from 'markdownlint-rule-helpers'
+import { applyFixes } from 'markdownlint'
 
 import type { LintError } from 'markdownlint'
 

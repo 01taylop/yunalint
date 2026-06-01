@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 
-import { applyFixes } from 'markdownlint-rule-helpers'
+import { applyFixes } from 'markdownlint'
 
 import { markdownlintError } from '@Jest/fixtures'
 
@@ -11,10 +11,6 @@ import type { LintError } from 'markdownlint'
 jest.mock('node:fs', () => ({
   readFileSync: jest.fn(),
   writeFileSync: jest.fn(),
-}))
-
-jest.mock('markdownlint-rule-helpers', () => ({
-  applyFixes: jest.fn(),
 }))
 
 describe('fixFile', () => {
