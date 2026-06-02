@@ -18,9 +18,7 @@ enum RuleSeverity {
  */
 
 interface FilePatterns {
-  includePatterns: {
-    [key in Linter]: Array<string>
-  }
+  includePatterns: Record<Linter, Array<string>>
   ignorePatterns: Array<string>
 }
 
@@ -39,20 +37,20 @@ interface LinterInterface {
  * REPORTING
  */
 
+type ResultTheme = (value: string) => string
+
 type FormattedResult = {
   message: string
-  messageTheme: (message: string) => string
+  messageTheme: ResultTheme
   position: string
-  positionTheme: (position: string) => string
+  positionTheme: ResultTheme
   rule: string
-  ruleTheme: (rule: string) => string
+  ruleTheme: ResultTheme
   severity: string
-  severityTheme: (severity: string) => string
+  severityTheme: ResultTheme
 }
 
-interface ReportResults {
-  [file: string]: Array<FormattedResult>
-}
+type ReportResults = Record<string, Array<FormattedResult>>
 
 interface ReportSummary {
   deprecatedRules: Array<string>

@@ -1,6 +1,8 @@
 import { ProcessSupervisor } from 'process-supervisor'
 
-import action from '../commands/lint/action'
+import { defaultLintCommandOptions } from '@Jest/fixtures'
+
+import { lintAction } from '../commands/lint/action'
 import { createProgram } from '../program'
 
 import type { LintCommandOptions } from '@Types/commands'
@@ -10,45 +12,29 @@ jest.mock('../commands/lint/action')
 describe('index - CLI integration', () => {
   const supervisor = new ProcessSupervisor()
 
-  afterEach(async () => {
-    if (supervisor.has('file-watcher')) {
-      await supervisor.unregister('file-watcher')
-    }
-  })
-
-  it('calls the lint action by default', async () => {
+  it('calls the lint command by default', async () => {
     expect.assertions(1)
 
     const program = createProgram({ supervisor })
-    await program.parseAsync(['node', './index.ts'], { from: 'user' })
+    await program.parseAsync(['node', './index.ts'])
 
-    expect(action).toHaveBeenCalledTimes(1)
+    expect(lintAction).toHaveBeenCalledTimes(1)
   })
 
-  it('calls the lint action with default options', async () => {
+  it('calls the lint command with default options', async () => {
     expect.assertions(1)
 
     const program = createProgram({ supervisor })
-    await program.parseAsync(['node', './index.ts', 'lint'], { from: 'user' })
+    await program.parseAsync([
+      'node',
+      './index.ts',
+      'lint',
+    ])
 
-    const expectedOptions: LintCommandOptions = {
-      cache: false,
-      clearCache: false,
-      debug: false,
-      emoji: '🌺',
-      eslintInclude: undefined,
-      eslintUseLegacyConfig: false,
-      fix: false,
-      ignoreDirs: undefined,
-      ignorePatterns: undefined,
-      title: 'Yuna',
-      watch: false,
-    }
-
-    expect(action).toHaveBeenCalledWith(supervisor, expectedOptions)
+    expect(lintAction).toHaveBeenCalledWith(supervisor, defaultLintCommandOptions)
   })
 
-  it('calls the lint action with configured options', async () => {
+  it('calls the lint command with provided options', async () => {
     expect.assertions(1)
 
     const program = createProgram({ supervisor })
@@ -67,7 +53,7 @@ describe('index - CLI integration', () => {
       '--ignore-patterns', 'dist',
       '--title', 'Rocket Lint',
       '--watch',
-    ], { from: 'user' })
+    ])
 
     const expectedOptions: LintCommandOptions = {
       cache: true,
@@ -83,7 +69,7 @@ describe('index - CLI integration', () => {
       watch: true,
     }
 
-    expect(action).toHaveBeenCalledWith(supervisor, expectedOptions)
+    expect(lintAction).toHaveBeenCalledWith(supervisor, expectedOptions)
   })
 
 })

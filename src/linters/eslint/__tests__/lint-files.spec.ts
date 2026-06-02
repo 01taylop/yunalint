@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import { ESLint, loadESLint } from 'eslint'
 
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { lintFiles } from '../lint-files'
 

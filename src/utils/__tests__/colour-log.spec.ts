@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-import colourLog from '../colour-log'
+import { colourLog } from '../colour-log'
 
 jest.mock('chalk', () => ({
   blue: jest.fn().mockImplementation(text => text),
@@ -16,7 +16,7 @@ jest.unmock('@Utils/colour-log')
 
 describe('colourLog', () => {
 
-  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => true)
+  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
 
   describe('config', () => {
 
@@ -65,7 +65,7 @@ describe('colourLog', () => {
   describe('error', () => {
 
     const error = new Error('Oops')
-    const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => true)
+    const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
 
     it('logs the text in red', () => {
       colourLog.error('An error occurred')
@@ -163,7 +163,7 @@ describe('colourLog', () => {
 
   describe('warning', () => {
 
-    const mockConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => true)
+    const mockConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {})
 
     it('logs the text in yellow', () => {
       colourLog.warning('Be careful!')

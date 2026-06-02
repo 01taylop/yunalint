@@ -42,7 +42,7 @@ describe('watchFiles', () => {
       })
     }
 
-    const eventHandler = (mockWatcher.on as jest.Mock).mock.calls.find(([name, _handler]) => name === event)?.[1]
+    const eventHandler = jest.mocked(mockWatcher.on).mock.calls.find(([name, _handler]) => name === event)?.[1]
     if (eventHandler) {
       eventHandler(path)
     }

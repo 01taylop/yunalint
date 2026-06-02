@@ -1,7 +1,7 @@
 import { lint } from 'markdownlint/promise'
 
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { fixFile } from './fix-file'
 import { loadConfig } from './load-config'

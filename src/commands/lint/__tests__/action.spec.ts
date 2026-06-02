@@ -2,12 +2,12 @@ import { ProcessSupervisor } from 'process-supervisor'
 
 import { defaultLintCommandOptions, mockFilePatterns } from '@Jest/fixtures'
 import { clearCacheDirectory } from '@Utils/cache'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { getFilePatterns } from '@Utils/file-patterns'
 import { clearTerminal } from '@Utils/terminal'
 import { EVENTS, fileWatcherEvents, watchFiles } from '@Utils/watch-files'
 
-import action from '../action'
+import { lintAction } from '../action'
 import { executeAllLinters } from '../execute-all'
 
 jest.mock('@Utils/cache')
@@ -36,7 +36,7 @@ describe('lint action', () => {
     it('sets global.debug to true when debug option is true', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, debug: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, debug: true })
 
       expect(global.debug).toBe(true)
     })
@@ -44,7 +44,7 @@ describe('lint action', () => {
     it('sets global.debug to false when debug option is false', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, debug: false })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, debug: false })
 
       expect(global.debug).toBe(false)
     })
@@ -56,7 +56,7 @@ describe('lint action', () => {
     it('clears the terminal', async () => {
       expect.assertions(1)
 
-      await action(supervisor, defaultLintCommandOptions)
+      await lintAction(supervisor, defaultLintCommandOptions)
 
       expect(clearTerminal).toHaveBeenCalledTimes(1)
     })
@@ -64,7 +64,7 @@ describe('lint action', () => {
     it('logs the default title and emoji', async () => {
       expect.assertions(1)
 
-      await action(supervisor, defaultLintCommandOptions)
+      await lintAction(supervisor, defaultLintCommandOptions)
 
       expect(colourLog.title).toHaveBeenCalledWith('🌺 Yuna\n')
     })
@@ -72,7 +72,7 @@ describe('lint action', () => {
     it('logs a custom title and emoji', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, emoji: '🚀', title: 'Rocket Lint' })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, emoji: '🚀', title: 'Rocket Lint' })
 
       expect(colourLog.title).toHaveBeenCalledWith('🚀 Rocket Lint\n')
     })
@@ -84,7 +84,7 @@ describe('lint action', () => {
     it('does not clear cache by default', async () => {
       expect.assertions(1)
 
-      await action(supervisor, defaultLintCommandOptions)
+      await lintAction(supervisor, defaultLintCommandOptions)
 
       expect(clearCacheDirectory).not.toHaveBeenCalled()
     })
@@ -92,7 +92,7 @@ describe('lint action', () => {
     it('clears cache when clearCache option is true', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, clearCache: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, clearCache: true })
 
       expect(clearCacheDirectory).toHaveBeenCalledTimes(1)
     })
@@ -104,7 +104,7 @@ describe('lint action', () => {
     it('gets file patterns with provided options', async () => {
       expect.assertions(1)
 
-      await action(supervisor, {
+      await lintAction(supervisor, {
         ...defaultLintCommandOptions,
         eslintInclude: ['*.js'],
         ignoreDirs: ['build'],
@@ -125,7 +125,7 @@ describe('lint action', () => {
     it('executes all linters with default options', async () => {
       expect.assertions(1)
 
-      await action(supervisor, defaultLintCommandOptions)
+      await lintAction(supervisor, defaultLintCommandOptions)
 
       expect(executeAllLinters).toHaveBeenCalledWith({
         cache: false,
@@ -140,7 +140,7 @@ describe('lint action', () => {
     it('executes all linters with custom options', async () => {
       expect.assertions(1)
 
-      await action(supervisor, {
+      await lintAction(supervisor, {
         ...defaultLintCommandOptions,
         cache: true,
         eslintUseLegacyConfig: true,
@@ -164,7 +164,7 @@ describe('lint action', () => {
     it('does not start watcher by default', async () => {
       expect.assertions(1)
 
-      await action(supervisor, defaultLintCommandOptions)
+      await lintAction(supervisor, defaultLintCommandOptions)
 
       expect(watchFiles).not.toHaveBeenCalled()
     })
@@ -172,7 +172,7 @@ describe('lint action', () => {
     it('starts watcher when watch option is true', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, watch: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
 
       expect(watchFiles).toHaveBeenCalledWith(mockFilePatterns)
     })
@@ -180,7 +180,7 @@ describe('lint action', () => {
     it('registers file watcher event handler', async () => {
       expect.assertions(1)
 
-      await action(supervisor, { ...defaultLintCommandOptions, watch: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
 
       expect(fileWatcherEvents.on).toHaveBeenCalledWith(
         EVENTS.FILE_CHANGED,
@@ -199,7 +199,7 @@ describe('lint action', () => {
         return fileWatcherEvents
       })
 
-      await action(supervisor, { ...defaultLintCommandOptions, watch: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
 
       expect(executeAllLinters).toHaveBeenCalledTimes(1)
 
@@ -220,7 +220,7 @@ describe('lint action', () => {
         return fileWatcherEvents
       })
 
-      await action(supervisor, { ...defaultLintCommandOptions, watch: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
 
       changeHandler!({ message: 'File changed: test.ts' })
       await Promise.resolve()
@@ -235,7 +235,7 @@ describe('lint action', () => {
       const mockWatcher = { close: jest.fn().mockResolvedValue(undefined) }
       jest.mocked(watchFiles).mockReturnValue(mockWatcher as any)
 
-      await action(supervisor, { ...defaultLintCommandOptions, watch: true })
+      await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
       await supervisor.stop('file-watcher')
 
       expect(mockWatcher.close).toHaveBeenCalledTimes(1)

@@ -1,8 +1,8 @@
 import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
-import action from '../action'
-import lintCommand from '../command'
+import { lintAction } from '../action'
+import { lintCommand } from '../command'
 
 jest.mock('../action')
 
@@ -31,9 +31,9 @@ describe('lintCommand', () => {
   })
 
   it('invokes the action handler when the command is executed', async () => {
-    await program.parseAsync(['node', 'test', 'lint'], { from: 'user' })
+    await program.parseAsync(['node', './index.ts', 'lint'])
 
-    expect(action).toHaveBeenCalledWith(supervisor, expect.objectContaining({
+    expect(lintAction).toHaveBeenCalledWith(supervisor, expect.objectContaining({
       fix: false,
       watch: false,
       emoji: '🌺',

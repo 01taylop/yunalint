@@ -1,10 +1,11 @@
 import { executeLinter } from '@Linters/execute'
-import { Linter, type FilePatterns } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { Linter } from '@Types/lint'
+import { colourLog } from '@Utils/colour-log'
 import { notifyResults } from '@Utils/notifier'
 import { logResults, logSummaryBlock } from '@Utils/reporting'
 
 import type { LintCommandOptions } from '@Types/commands'
+import type { FilePatterns } from '@Types/lint'
 
 type ExecuteAllLintersOptions = Pick<LintCommandOptions, 'cache' | 'eslintUseLegacyConfig' | 'fix' | 'title' | 'watch'> & {
   filePatterns: FilePatterns

@@ -1,9 +1,11 @@
 import chalk from 'chalk'
 import { spaceLog } from 'space-log'
 
-import { Linter, type ReportSummary } from '@Types/lint'
+import { Linter } from '@Types/lint'
 
 import { logResults, logSummary, logSummaryBlock } from '../reporting'
+
+import type { ReportSummary } from '@Types/lint'
 
 jest.mock('chalk', () => ({
   bgGreen: {
@@ -28,7 +30,7 @@ jest.mock('space-log')
 
 describe('reporting', () => {
 
-  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => true)
+  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
 
   const commonSummary: ReportSummary = {
     deprecatedRules: [],
@@ -113,7 +115,7 @@ describe('reporting', () => {
 
     beforeEach(() => {
       jest.useFakeTimers().setSystemTime(1718971200)
-      startTime = new Date().getTime()
+      startTime = Date.now()
       jest.advanceTimersByTime(1000)
     })
 

@@ -1,11 +1,11 @@
 import { generateLintReport, mockFilePatterns } from '@Jest/fixtures'
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
 import { sourceFiles } from '@Utils/source-files'
 
 import { executeLinter } from '../execute'
-import linters from '../linters'
+import { linters } from '../linters'
 
 jest.mock('@Utils/reporting')
 jest.mock('@Utils/source-files')
@@ -49,10 +49,10 @@ describe.each([
 
     await executeLinter(linter, commonOptions)
 
-    expect(sourceFiles).toHaveBeenCalledWith(commonOptions.filePatterns, linter)
+    expect(sourceFiles).toHaveBeenCalledWith(linter, commonOptions.filePatterns)
   })
 
-  it('calls lintFiles on the correct linter with proper options', async () => {
+  it('calls `lintFiles` on the correct linter with proper options', async () => {
     expect.assertions(1)
 
     await executeLinter(linter, commonOptions)

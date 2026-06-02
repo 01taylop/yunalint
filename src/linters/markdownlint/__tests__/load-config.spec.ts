@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import { readConfig } from 'markdownlint/promise'
 
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import defaultConfig from '../../../../config/markdownlint.json'
 import { loadConfig } from '../load-config'

@@ -1,7 +1,7 @@
 import { glob } from 'glob'
 
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { sourceFiles } from '../source-files'
 
@@ -23,7 +23,7 @@ describe('sourceFiles', () => {
   it('logs a warning and returns an empty array when no include patterns are provided for the linter', async () => {
     expect.assertions(3)
 
-    const files = await sourceFiles(getFilePatterns([]), Linter.ESLint)
+    const files = await sourceFiles(Linter.ESLint, getFilePatterns([]))
 
     expect(glob).not.toHaveBeenCalled()
     expect(colourLog.warning).toHaveBeenCalledOnceWith('\nNo file patterns provided for ESLint. Skipping.')
@@ -39,7 +39,7 @@ describe('sourceFiles', () => {
 
     jest.mocked(glob).mockResolvedValue([])
 
-    await sourceFiles(getFilePatterns(), linter)
+    await sourceFiles(linter, getFilePatterns())
 
     expect(glob).toHaveBeenCalledOnceWith(expectedFilePattern, { ignore: [ 'node_modules' ] })
   })
@@ -49,7 +49,7 @@ describe('sourceFiles', () => {
 
     jest.mocked(glob).mockResolvedValue([])
 
-    const files = await sourceFiles(getFilePatterns(), Linter.ESLint)
+    const files = await sourceFiles(Linter.ESLint, getFilePatterns())
 
     expect(glob).toHaveBeenCalledOnceWith(['**/*.ts'], { ignore: [ 'node_modules' ] })
     expect(colourLog.info).toHaveBeenCalledOnceWith('\nNo files found for ESLint.')
@@ -63,7 +63,7 @@ describe('sourceFiles', () => {
 
     jest.mocked(glob).mockResolvedValue(mockFiles)
 
-    const files = await sourceFiles(getFilePatterns(), Linter.ESLint)
+    const files = await sourceFiles(Linter.ESLint, getFilePatterns())
 
     expect(glob).toHaveBeenCalledOnceWith(['**/*.ts'], { ignore: [ 'node_modules' ] })
     expect(files).toStrictEqual(mockFiles)
@@ -78,7 +78,7 @@ describe('sourceFiles', () => {
 
     jest.mocked(glob).mockResolvedValue(mockFiles)
 
-    const files = await sourceFiles(getFilePatterns(), Linter.ESLint)
+    const files = await sourceFiles(Linter.ESLint, getFilePatterns())
 
     expect(glob).toHaveBeenCalledOnceWith(['**/*.ts'], { ignore: [ 'node_modules' ] })
     expect(files).toStrictEqual(expectedFiles)
@@ -93,7 +93,7 @@ describe('sourceFiles', () => {
     jest.mocked(glob).mockRejectedValue(error)
 
     try {
-      await sourceFiles(getFilePatterns(), Linter.ESLint)
+      await sourceFiles(Linter.ESLint, getFilePatterns())
     } catch {
       expect(colourLog.error).toHaveBeenCalledOnceWith('Failed to source files for ESLint', error)
       expect(process.exit).toHaveBeenCalledOnceWith(1)

@@ -1,7 +1,7 @@
 import { generateLintReport, mockFilePatterns } from '@Jest/fixtures'
 import { executeLinter } from '@Linters/execute'
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { notifyResults } from '@Utils/notifier'
 import { logResults, logSummaryBlock } from '@Utils/reporting'
 

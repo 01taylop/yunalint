@@ -1,4 +1,4 @@
-import lintCommand from './lint/command'
+import { lintCommand } from './lint'
 
 export {
   lintCommand,
