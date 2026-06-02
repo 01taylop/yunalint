@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
-import action from './action'
+import { lintAction } from './action'
 
 const helpText = `
 Examples:
@@ -29,7 +29,7 @@ Examples:
   Run all linters with caching, fixing, and watching for changes:
     ${chalk.gray('$ yuna lint --cache --fix --watch')}`
 
-const command = (program: Command, supervisor: ProcessSupervisor) => {
+const lintCommand = (program: Command, supervisor: ProcessSupervisor) => {
   program
     .command('lint', { isDefault: true })
     .description('Run all linters: ESLint, Stylelint, and Markdownlint (default command).')
@@ -56,11 +56,13 @@ const command = (program: Command, supervisor: ProcessSupervisor) => {
     .option('--debug', 'output additional debug information', false)
     .option('--eslint-use-legacy-config', 'use legacy ESLint config', false)
 
-    .action(options => action(supervisor, options))
+    .action(options => lintAction(supervisor, options))
 
     .addHelpText('before', 'Command: lint')
     .addHelpText('after', helpText)
     .showHelpAfterError(`\n💡 Run \`yuna lint --help\` for more information.`)
 }
 
-export default command
+export {
+  lintCommand,
+}

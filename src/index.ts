@@ -9,4 +9,4 @@ const program = createProgram({
   supervisor,
 })
 
-program.parseAsync(process.argv)
+await program.parseAsync(process.argv)

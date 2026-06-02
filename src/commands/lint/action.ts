@@ -10,7 +10,7 @@ import { executeAllLinters } from './execute-all'
 
 import type { LintCommandOptions } from '@Types/commands'
 
-const action = async (
+const lintAction = async (
   supervisor: ProcessSupervisor,
   { cache, clearCache, debug, emoji, eslintInclude, eslintUseLegacyConfig, fix, ignoreDirs, ignorePatterns, title, watch }: LintCommandOptions,
 ) => {
@@ -57,4 +57,6 @@ const action = async (
   }
 }
 
-export default action
+export {
+  lintAction,
+}
