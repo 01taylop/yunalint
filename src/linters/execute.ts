@@ -16,7 +16,7 @@ const executeLinter = async (linter: Linter, { cache, eslintUseLegacyConfig, fil
   const startTime = Date.now()
   colourLog.info(`Running ${linter.toLowerCase()}...`)
 
-  const files = await sourceFiles(filePatterns, linter)
+  const files = await sourceFiles(linter, filePatterns)
 
   const report = await linters[linter].lintFiles({
     cache,

@@ -49,7 +49,7 @@ describe.each([
 
     await executeLinter(linter, commonOptions)
 
-    expect(sourceFiles).toHaveBeenCalledWith(commonOptions.filePatterns, linter)
+    expect(sourceFiles).toHaveBeenCalledWith(linter, commonOptions.filePatterns)
   })
 
   it('calls `lintFiles` on the correct linter with proper options', async () => {

@@ -5,7 +5,7 @@ import { pluralise } from '@Utils/transform'
 
 import type { FilePatterns, Linter } from '@Types/lint'
 
-const sourceFiles = async ({ ignorePatterns, includePatterns }: FilePatterns, linter: Linter): Promise<Array<string>> => {
+const sourceFiles = async (linter: Linter, { ignorePatterns, includePatterns }: FilePatterns): Promise<Array<string>> => {
   const include = includePatterns[linter]
 
   if (!include.length) {
