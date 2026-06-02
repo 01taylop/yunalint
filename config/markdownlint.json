@@ -82,6 +82,7 @@
     "code_blocks": false,
     "html_elements": false,
     "names": [
+      "Docker",
       "ESLint",
       "github.com",
       "GitHub",
@@ -90,10 +91,11 @@
       "Markdownlint",
       "Next.js",
       "Node.js",
-      "Redux",
+      "Prettier",
       "Stylelint",
       "TypeScript",
-      "Vue.js"
+      "Vite",
+      "Yarn"
     ]
   },
   "MD045": true,
