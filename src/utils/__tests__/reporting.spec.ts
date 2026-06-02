@@ -115,7 +115,7 @@ describe('reporting', () => {
 
     beforeEach(() => {
       jest.useFakeTimers().setSystemTime(1718971200)
-      startTime = new Date().getTime()
+      startTime = Date.now()
       jest.advanceTimersByTime(1000)
     })
 

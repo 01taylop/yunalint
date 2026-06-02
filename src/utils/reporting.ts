@@ -55,7 +55,7 @@ const logSummary = (summary: ReportSummary, startTime: number) => {
   // Output
   const finishedLinter = chalk.cyan(`Finished ${linter.toLowerCase()}`)
   const files = `${fileCount} ${pluralise('file', fileCount)}`
-  const endTime = `${new Date().getTime() - startTime}ms`
+  const endTime = `${Date.now() - startTime}ms`
 
   console.log(`\n${finishedLinter}`, chalk.yellow(`[${files}, ${endTime}]`))
   if (log.length) {
