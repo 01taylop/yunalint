@@ -16,7 +16,7 @@ jest.unmock('@Utils/colour-log')
 
 describe('colourLog', () => {
 
-  const mockedConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
+  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => true)
 
   describe('config', () => {
 
@@ -25,7 +25,7 @@ describe('colourLog', () => {
 
       expect(chalk.magenta).toHaveBeenCalledOnceWith('setting:')
       expect(chalk.dim).toHaveBeenCalledOnceWith('foo')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('setting:', 'foo')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('setting:', 'foo')
     })
 
     it('logs the key in magenta and the config array in dim', () => {
@@ -33,7 +33,7 @@ describe('colourLog', () => {
 
       expect(chalk.magenta).toHaveBeenCalledOnceWith('setting:')
       expect(chalk.dim).toHaveBeenCalledOnceWith('[foo, bar, baz]')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('setting:', '[foo, bar, baz]')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('setting:', '[foo, bar, baz]')
     })
 
   })
@@ -46,7 +46,7 @@ describe('colourLog', () => {
       colourLog.configDebug('Debug message', 'config')
 
       expect(chalk.blue).not.toHaveBeenCalled()
-      expect(mockedConsoleLog).not.toHaveBeenCalled()
+      expect(mockConsoleLog).not.toHaveBeenCalled()
     })
 
     it('logs the message in blue and the config in default if global.debug is true', () => {
@@ -55,9 +55,9 @@ describe('colourLog', () => {
       colourLog.configDebug('Debug message', 'config')
 
       expect(chalk.blue).toHaveBeenCalledOnceWith('Debug message')
-      expect(mockedConsoleLog).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(1, '\nDebug message')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, 'config')
+      expect(mockConsoleLog).toHaveBeenCalledTimes(2)
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(1, '\nDebug message')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, 'config')
     })
 
   })
@@ -65,20 +65,20 @@ describe('colourLog', () => {
   describe('error', () => {
 
     const error = new Error('Oops')
-    const mockedConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+    const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => true)
 
     it('logs the text in red', () => {
       colourLog.error('An error occurred')
 
       expect(chalk.red).toHaveBeenCalledOnceWith('\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred.')
     })
 
     it('logs the text with debug instructions if there is an error and global.debug is false', () => {
       colourLog.error('An error occurred', error)
 
       expect(chalk.red).toHaveBeenCalledOnceWith('\n× An error occurred. Run with --debug for more information.')
-      expect(mockedConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred. Run with --debug for more information.')
+      expect(mockConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred. Run with --debug for more information.')
     })
 
     it('logs the error if global.debug is true', () => {
@@ -86,9 +86,9 @@ describe('colourLog', () => {
 
       colourLog.error('An error occurred', error)
 
-      expect(mockedConsoleError).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(2, `\n${error.stack}`)
+      expect(mockConsoleError).toHaveBeenCalledTimes(2)
+      expect(mockConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenNthCalledWith(2, `\n${error.stack}`)
     })
 
     it('logs the error message if error is an Error without a stack', () => {
@@ -99,9 +99,9 @@ describe('colourLog', () => {
 
       colourLog.error('An error occurred', noStackError)
 
-      expect(mockedConsoleError).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(2, `\n${noStackError.message}`)
+      expect(mockConsoleError).toHaveBeenCalledTimes(2)
+      expect(mockConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenNthCalledWith(2, `\n${noStackError.message}`)
     })
 
     it('logs the error if error is a string', () => {
@@ -109,9 +109,9 @@ describe('colourLog', () => {
 
       colourLog.error('An error occurred', 'String error')
 
-      expect(mockedConsoleError).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(2, '\nString error')
+      expect(mockConsoleError).toHaveBeenCalledTimes(2)
+      expect(mockConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenNthCalledWith(2, '\nString error')
     })
 
     it('logs the error if error is a plain object', () => {
@@ -119,9 +119,9 @@ describe('colourLog', () => {
 
       colourLog.error('An error occurred', { foo: 'bar' })
 
-      expect(mockedConsoleError).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(2, `\n${JSON.stringify({ foo: 'bar' }, null, 2)}`)
+      expect(mockConsoleError).toHaveBeenCalledTimes(2)
+      expect(mockConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenNthCalledWith(2, `\n${JSON.stringify({ foo: 'bar' }, null, 2)}`)
     })
 
     it('logs a fallback message if error cannot be stringified', () => {
@@ -132,9 +132,9 @@ describe('colourLog', () => {
 
       colourLog.error('An error occurred', circular)
 
-      expect(mockedConsoleError).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
-      expect(mockedConsoleError).toHaveBeenNthCalledWith(2, '\nUnable to stringify error')
+      expect(mockConsoleError).toHaveBeenCalledTimes(2)
+      expect(mockConsoleError).toHaveBeenNthCalledWith(1, '\n× An error occurred.')
+      expect(mockConsoleError).toHaveBeenNthCalledWith(2, '\nUnable to stringify error')
     })
 
   })
@@ -145,7 +145,7 @@ describe('colourLog', () => {
       colourLog.info('Starting lint...')
 
       expect(chalk.blue).toHaveBeenCalledOnceWith('Starting lint...')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('Starting lint...')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('Starting lint...')
     })
 
   })
@@ -156,20 +156,20 @@ describe('colourLog', () => {
       colourLog.title('🌺 Yuna')
 
       expect(chalk.cyan).toHaveBeenCalledOnceWith('🌺 Yuna')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('🌺 Yuna')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('🌺 Yuna')
     })
 
   })
 
   describe('warning', () => {
 
-    const mockedConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const mockConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => true)
 
     it('logs the text in yellow', () => {
       colourLog.warning('Be careful!')
 
       expect(chalk.yellow).toHaveBeenCalledOnceWith('Be careful!')
-      expect(mockedConsoleWarn).toHaveBeenCalledOnceWith('Be careful!')
+      expect(mockConsoleWarn).toHaveBeenCalledOnceWith('Be careful!')
     })
 
   })

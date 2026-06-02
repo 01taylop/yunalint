@@ -44,6 +44,15 @@ describe('formatResult', () => {
     })
   })
 
+  it('trims the message', () => {
+    const formattedResult = formatResult({
+      ...commonResult,
+      message: '  Test message  ',
+    })
+
+    expect(formattedResult).toStrictEqual(commonFormattedResult)
+  })
+
   it('formats a result without a column', () => {
     const formattedResult = formatResult({
       ...commonResult,
@@ -67,15 +76,6 @@ describe('formatResult', () => {
       ...commonFormattedResult,
       position: '0',
     })
-  })
-
-  it('trims the message', () => {
-    const formattedResult = formatResult({
-      ...commonResult,
-      message: '  Test message  ',
-    })
-
-    expect(formattedResult).toStrictEqual(commonFormattedResult)
   })
 
 })

@@ -21,6 +21,10 @@ const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?:
   const fileHashes = new Map<string, string>()
   const pendingChanges = new Map<string, NodeJS.Timeout>()
 
+  const filteredPatterns = linters
+    ? linters.flatMap(linter => includePatterns[linter])
+    : Object.values(includePatterns).flat()
+
   const cancelExistingTimeout = (path: string) => {
     const existingTimeout = pendingChanges.get(path)
     if (existingTimeout) {
@@ -28,9 +32,6 @@ const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?:
       pendingChanges.delete(path)
     }
   }
-  const filteredPatterns = linters
-    ? linters.flatMap(linter => includePatterns[linter])
-    : Object.values(includePatterns).flat()
 
   const watcher = chokidar.watch(filteredPatterns, {
     ignored: ignorePatterns,

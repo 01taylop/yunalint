@@ -59,24 +59,24 @@ describe('sourceFiles', () => {
   it('returns a single file sourced for the file pattern', async () => {
     expect.assertions(3)
 
-    const mockedFiles = ['file1.ts']
+    const mockFiles = ['file1.ts']
 
-    jest.mocked(glob).mockResolvedValue(mockedFiles)
+    jest.mocked(glob).mockResolvedValue(mockFiles)
 
     const files = await sourceFiles(getFilePatterns(), Linter.ESLint)
 
     expect(glob).toHaveBeenCalledOnceWith(['**/*.ts'], { ignore: [ 'node_modules' ] })
-    expect(files).toStrictEqual(mockedFiles)
-    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Sourced 1 file for ESLint:', mockedFiles)
+    expect(files).toStrictEqual(mockFiles)
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Sourced 1 file for ESLint:', mockFiles)
   })
 
   it('returns multiple files sourced for the file pattern - excluding any duplicates', async () => {
     expect.assertions(3)
 
-    const mockedFiles = ['file1.ts', 'file2.ts', 'file1.ts']
+    const mockFiles = ['file1.ts', 'file2.ts', 'file1.ts']
     const expectedFiles = ['file1.ts', 'file2.ts']
 
-    jest.mocked(glob).mockResolvedValue(mockedFiles)
+    jest.mocked(glob).mockResolvedValue(mockFiles)
 
     const files = await sourceFiles(getFilePatterns(), Linter.ESLint)
 
