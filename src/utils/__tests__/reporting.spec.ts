@@ -26,7 +26,7 @@ jest.mock('chalk', () => ({
 
 jest.mock('space-log')
 
-describe('colourLog', () => {
+describe('reporting', () => {
 
   const mockedConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
 

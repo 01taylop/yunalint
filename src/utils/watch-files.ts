@@ -17,18 +17,17 @@ interface FileChangedEventPayload {
 
 const fileWatcherEvents = new EventEmitter()
 
-const fileHashes = new Map<string, string>()
-const pendingChanges = new Map<string, NodeJS.Timeout>()
-
-const cancelExistingTimeout = (path: string) => {
-  const existingTimeout = pendingChanges.get(path)
-  if (existingTimeout) {
-    clearTimeout(existingTimeout)
-    pendingChanges.delete(path)
-  }
-}
-
 const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?: Array<Linter>) => {
+  const fileHashes = new Map<string, string>()
+  const pendingChanges = new Map<string, NodeJS.Timeout>()
+
+  const cancelExistingTimeout = (path: string) => {
+    const existingTimeout = pendingChanges.get(path)
+    if (existingTimeout) {
+      clearTimeout(existingTimeout)
+      pendingChanges.delete(path)
+    }
+  }
   const filteredPatterns = linters
     ? linters.flatMap(linter => includePatterns[linter])
     : Object.values(includePatterns).flat()
