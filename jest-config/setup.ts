@@ -11,6 +11,10 @@ jest.mock('markdownlint/promise', () => ({
   readConfig: jest.fn(),
 }))
 
+jest.mock('stylelint', () => ({
+  lint: jest.fn(),
+}))
+
 jest.mock('@Utils/colour-log')
 
 jest.spyOn(process, 'exit').mockImplementation(code => {

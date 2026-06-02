@@ -46,7 +46,6 @@ describe('lintFiles', () => {
   const stylelintLintMock = jest.mocked(stylelint.lint).mockImplementation(async () => ({
     cwd: '',
     errored: false,
-    output: '',
     report: '',
     reportedDisables: [],
     results: mockedLintResults,
