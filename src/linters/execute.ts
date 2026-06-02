@@ -3,7 +3,7 @@ import colourLog from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
 import { sourceFiles } from '@Utils/source-files'
 
-import linters from './linters'
+import { linters } from './linters'
 
 import type { LintCommandOptions } from '@Types/commands'
 import type { FilePatterns, LintReport } from '@Types/lint'
@@ -13,7 +13,7 @@ type ExecuteLinterOptions = Pick<LintCommandOptions, 'cache' | 'eslintUseLegacyC
 }
 
 const executeLinter = async (linter: Linter, { cache, eslintUseLegacyConfig, filePatterns, fix }: ExecuteLinterOptions): Promise<LintReport> => {
-  const startTime = new Date().getTime()
+  const startTime = Date.now()
   colourLog.info(`Running ${linter.toLowerCase()}...`)
 
   const files = await sourceFiles(filePatterns, linter)

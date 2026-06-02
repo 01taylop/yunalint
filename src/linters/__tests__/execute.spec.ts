@@ -5,7 +5,7 @@ import { logSummary } from '@Utils/reporting'
 import { sourceFiles } from '@Utils/source-files'
 
 import { executeLinter } from '../execute'
-import linters from '../linters'
+import { linters } from '../linters'
 
 jest.mock('@Utils/reporting')
 jest.mock('@Utils/source-files')
@@ -52,7 +52,7 @@ describe.each([
     expect(sourceFiles).toHaveBeenCalledWith(commonOptions.filePatterns, linter)
   })
 
-  it('calls lintFiles on the correct linter with proper options', async () => {
+  it('calls `lintFiles` on the correct linter with proper options', async () => {
     expect.assertions(1)
 
     await executeLinter(linter, commonOptions)

@@ -12,4 +12,6 @@ const linters: Record<Linter, LinterInterface> = {
   [Linter.Stylelint]: stylelint,
 }
 
-export default linters
+export {
+  linters,
+}
