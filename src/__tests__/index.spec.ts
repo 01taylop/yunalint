@@ -12,17 +12,11 @@ jest.mock('../commands/lint/action')
 describe('index - CLI integration', () => {
   const supervisor = new ProcessSupervisor()
 
-  afterEach(async () => {
-    if (supervisor.has('file-watcher')) {
-      await supervisor.unregister('file-watcher')
-    }
-  })
-
   it('calls the lint command by default', async () => {
     expect.assertions(1)
 
     const program = createProgram({ supervisor })
-    await program.parseAsync(['node', './index.ts'], { from: 'user' })
+    await program.parseAsync(['node', './index.ts'])
 
     expect(lintAction).toHaveBeenCalledTimes(1)
   })
@@ -35,7 +29,7 @@ describe('index - CLI integration', () => {
       'node',
       './index.ts',
       'lint',
-    ], { from: 'user' })
+    ])
 
     expect(lintAction).toHaveBeenCalledWith(supervisor, defaultLintCommandOptions)
   })
@@ -59,7 +53,7 @@ describe('index - CLI integration', () => {
       '--ignore-patterns', 'dist',
       '--title', 'Rocket Lint',
       '--watch',
-    ], { from: 'user' })
+    ])
 
     const expectedOptions: LintCommandOptions = {
       cache: true,

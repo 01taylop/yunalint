@@ -25,10 +25,6 @@ Commands:
 describe('createProgram', () => {
   const supervisor = new ProcessSupervisor()
 
-  afterEach(async () => {
-    await supervisor.shutdownAll()
-  })
-
   it('sets the program name', () => {
     const program = createProgram({ supervisor })
 
@@ -47,7 +43,7 @@ describe('createProgram', () => {
     expect(program.version()).toBe(version)
   })
 
-  it('displays the help text', () => {
+  it('configures the help text', () => {
     const helpInformation = createProgram({ supervisor })
       .configureHelp({ helpWidth: -1 })
       .helpInformation()
@@ -55,14 +51,43 @@ describe('createProgram', () => {
     expect(helpInformation).toStrictEqual(EXPECTED_HELP_TEXT)
   })
 
-  it('displays the version', () => {
-    const program = createProgram({ supervisor })
-      .configureOutput({ writeOut: jest.fn() })
-      .exitOverride()
+  it('displays the help text', () => {
+    expect.assertions(5)
 
-    expect(() => {
+    const writeOutMock = jest.fn()
+
+    const program = createProgram({ supervisor })
+      .configureHelp({ helpWidth: -1 })
+      .configureOutput({ writeOut: writeOutMock })
+
+    try {
+      program.parse(['node', './index.ts', '--help'])
+    } catch (e: unknown) {
+      expect((e as Error).message).toMatch('process.exit(0)')
+    }
+
+    expect(writeOutMock).toHaveBeenCalledTimes(3)
+    expect(writeOutMock).toHaveBeenNthCalledWith(1, expect.stringMatching('\n🌺 Yuna\n'))
+    expect(writeOutMock).toHaveBeenNthCalledWith(2, EXPECTED_HELP_TEXT)
+    expect(writeOutMock).toHaveBeenNthCalledWith(3, expect.stringContaining('Examples:'))
+  })
+
+  it('displays the version', () => {
+    expect.assertions(3)
+
+    const writeOutMock = jest.fn()
+
+    const program = createProgram({ supervisor })
+      .configureOutput({ writeOut: writeOutMock })
+
+    try {
       program.parse(['node', './index.ts', '--version'])
-    }).toThrow(version)
+    } catch (e: unknown) {
+      expect((e as Error).message).toMatch('process.exit(0)')
+    }
+
+    expect(writeOutMock).toHaveBeenCalledTimes(1)
+    expect(writeOutMock).toHaveBeenNthCalledWith(1, expect.stringMatching(version))
   })
 
   it('handles unknown options', () => {
@@ -75,8 +100,8 @@ describe('createProgram', () => {
 
     try {
       program.parse(['node', './index.ts', '--unknown'])
-    } catch (e: any) {
-      expect(e.message).toMatch('process.exit(1)')
+    } catch (e: unknown) {
+      expect((e as Error).message).toMatch('process.exit(1)')
     }
 
     expect(chalk.red).toHaveBeenCalledOnceWith(expect.stringContaining('× unknown option \'--unknown\''))

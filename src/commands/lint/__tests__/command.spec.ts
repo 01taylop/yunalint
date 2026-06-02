@@ -31,7 +31,7 @@ describe('lintCommand', () => {
   })
 
   it('invokes the action handler when the command is executed', async () => {
-    await program.parseAsync(['node', 'test', 'lint'], { from: 'user' })
+    await program.parseAsync(['node', './index.ts', 'lint'])
 
     expect(lintAction).toHaveBeenCalledWith(supervisor, expect.objectContaining({
       fix: false,

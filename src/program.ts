@@ -3,6 +3,7 @@ import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
 import { description, name, version } from '../package.json'
+
 import { lintCommand } from './commands'
 
 interface CreateProgramOptions {
