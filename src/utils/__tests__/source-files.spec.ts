@@ -1,7 +1,7 @@
 import { glob } from 'glob'
 
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { sourceFiles } from '../source-files'
 

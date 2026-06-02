@@ -1,7 +1,7 @@
 import { loadESLint } from 'eslint'
 
 import { Linter } from '@Types/lint'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { getCacheDirectory } from '@Utils/cache'
 
 import { processResults } from './process-results'

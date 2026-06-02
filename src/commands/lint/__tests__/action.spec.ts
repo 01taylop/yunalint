@@ -2,7 +2,7 @@ import { ProcessSupervisor } from 'process-supervisor'
 
 import { defaultLintCommandOptions, mockFilePatterns } from '@Jest/fixtures'
 import { clearCacheDirectory } from '@Utils/cache'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { getFilePatterns } from '@Utils/file-patterns'
 import { clearTerminal } from '@Utils/terminal'
 import { EVENTS, fileWatcherEvents, watchFiles } from '@Utils/watch-files'

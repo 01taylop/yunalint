@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import stylelint from 'stylelint'
 
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { lintFiles } from '../lint-files'
 

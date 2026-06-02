@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-import colourLog from '../colour-log'
+import { colourLog } from '../colour-log'
 
 jest.mock('chalk', () => ({
   blue: jest.fn().mockImplementation(text => text),

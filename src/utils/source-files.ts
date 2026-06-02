@@ -1,6 +1,6 @@
 import { glob } from 'glob'
 
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 import { pluralise } from '@Utils/transform'
 
 import type { FilePatterns, Linter } from '@Types/lint'

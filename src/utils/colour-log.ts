@@ -49,4 +49,6 @@ const colourLog = {
   warning: (text: string) => console.warn(chalk.yellow(text)),
 }
 
-export default colourLog
+export {
+  colourLog,
+}

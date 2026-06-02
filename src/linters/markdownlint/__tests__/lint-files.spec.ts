@@ -1,7 +1,7 @@
 import { lint } from 'markdownlint/promise'
 
 import { fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
-import colourLog from '@Utils/colour-log'
+import { colourLog } from '@Utils/colour-log'
 
 import { fixFile } from '../fix-file'
 import { lintFiles } from '../lint-files'
