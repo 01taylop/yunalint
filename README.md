@@ -16,7 +16,7 @@ Yuna integrates with the popular [markdownlint](https://github.com/DavidAnson/ma
 
 ### Default Rules
 
-Yuna uses a set of default rules for Markdown linting, which can be found [here](./config/markdownlint.json). These rules are designed to cover a wide range of common Markdown issues, providing a solid foundation for most projects.
+Yuna uses a set of default rules for Markdown linting, which can be found in [./config/markdownlint.json](./config/markdownlint.json). These rules are designed to cover a wide range of common Markdown issues, providing a solid foundation for most projects.
 
 ### Customising Rules
 
