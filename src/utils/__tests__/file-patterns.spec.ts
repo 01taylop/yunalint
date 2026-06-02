@@ -6,7 +6,7 @@ import { getFilePatterns } from '../file-patterns'
 describe('getFilePatterns', () => {
 
   beforeEach(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => true)
+    jest.spyOn(console, 'log').mockImplementation(() => {})
   })
 
   it('returns the default include patterns for ESLint', () => {

@@ -28,7 +28,7 @@ jest.mock('space-log')
 
 describe('reporting', () => {
 
-  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => true)
+  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
 
   const commonSummary: ReportSummary = {
     deprecatedRules: [],
