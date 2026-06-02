@@ -8,7 +8,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19"
   },
   "bin": {
     "yuna": "./lib/index.js"
@@ -43,7 +43,7 @@
     "postcss-scss": "4.0.9",
     "process-supervisor": "1.0.0",
     "space-log": "2.0.0",
-    "stylelint": "16.9.0",
+    "stylelint": "17.12.0",
     "stylelint-config-property-sort-order-smacss": "10.0.0",
     "stylelint-declaration-strict-value": "1.10.6",
     "stylelint-order": "6.0.4",
