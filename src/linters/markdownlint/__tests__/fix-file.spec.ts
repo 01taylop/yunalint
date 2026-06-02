@@ -14,11 +14,11 @@ jest.mock('node:fs', () => ({
 }))
 
 describe('fixFile', () => {
-  const mockFileContent = 'Original file content'
+  const originalFileContent = 'Original file content'
   const fixedFileContent = 'Fixed file content'
 
   beforeEach(() => {
-    jest.mocked(readFileSync).mockReturnValue(mockFileContent)
+    jest.mocked(readFileSync).mockReturnValue(originalFileContent)
     jest.mocked(applyFixes).mockReturnValue(fixedFileContent)
   })
 
@@ -29,7 +29,7 @@ describe('fixFile', () => {
     fixFile({ errors, file: filePath })
 
     expect(readFileSync).toHaveBeenCalledWith(`${process.cwd()}/${filePath}`, 'utf8')
-    expect(applyFixes).toHaveBeenCalledWith(mockFileContent, errors)
+    expect(applyFixes).toHaveBeenCalledWith(originalFileContent, errors)
     expect(writeFileSync).toHaveBeenCalledWith(`${process.cwd()}/${filePath}`, fixedFileContent)
   })
 

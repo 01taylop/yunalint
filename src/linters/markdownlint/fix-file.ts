@@ -10,7 +10,7 @@ interface FixFile {
   file: string
 }
 
-const fixFile = ({ errors, file }: FixFile) => {
+const fixFile = ({ errors, file }: FixFile): void => {
   const filePath = path.join(process.cwd(), file)
   const fileContent = readFileSync(filePath, 'utf8')
   const fixedContent = applyFixes(fileContent, errors)
