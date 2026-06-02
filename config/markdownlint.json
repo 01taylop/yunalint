@@ -13,7 +13,8 @@
     "start_indented": false
   },
   "MD009": {
-    "br_spaces": 2,
+    "br_spaces": 0,
+    "code_blocks": true,
     "list_item_empty_lines": false,
     "strict": true
   },
@@ -30,8 +31,8 @@
   "MD014": true,
   "MD018": true,
   "MD019": true,
-  "MD020": true,
-  "MD021": true,
+  "MD020": false,
+  "MD021": false,
   "MD022": {
     "lines_above": 1,
     "lines_below": 1
@@ -59,7 +60,10 @@
     "list_items": true
   },
   "MD032": true,
-  "MD033": true,
+  "MD033": {
+    "allowed_elements": [],
+    "table_allowed_elements": []
+  },
   "MD034": true,
   "MD035": {
     "style": "---"
@@ -78,10 +82,16 @@
     "code_blocks": false,
     "html_elements": false,
     "names": [
+      "ESLint",
+      "github.com",
+      "GitHub",
+      "GraphQL",
       "JavaScript",
+      "Markdownlint",
       "Next.js",
       "Node.js",
       "Redux",
+      "Stylelint",
       "TypeScript",
       "Vue.js"
     ]
@@ -108,5 +118,9 @@
     "style": "leading_and_trailing"
   },
   "MD056": true,
-  "MD058": true
+  "MD058": true,
+  "MD059": true,
+  "MD060": {
+    "style": "aligned"
+  }
 }
