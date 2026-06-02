@@ -1,4 +1,4 @@
-import { Linter, type FilePatterns, type LintReport } from '@Types/lint'
+import { Linter } from '@Types/lint'
 import colourLog from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
 import { sourceFiles } from '@Utils/source-files'
@@ -6,6 +6,7 @@ import { sourceFiles } from '@Utils/source-files'
 import linters from './linters'
 
 import type { LintCommandOptions } from '@Types/commands'
+import type { FilePatterns, LintReport } from '@Types/lint'
 
 type ExecuteLinterOptions = Pick<LintCommandOptions, 'cache' | 'eslintUseLegacyConfig' | 'fix'> & {
   filePatterns: FilePatterns

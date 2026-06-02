@@ -4,11 +4,12 @@ import { clearCacheDirectory } from '@Utils/cache'
 import colourLog from '@Utils/colour-log'
 import { getFilePatterns } from '@Utils/file-patterns'
 import { clearTerminal } from '@Utils/terminal'
-import { EVENTS, type FileChangedEventPayload, fileWatcherEvents, watchFiles } from '@Utils/watch-files'
+import { EVENTS, fileWatcherEvents, watchFiles } from '@Utils/watch-files'
 
 import { executeAllLinters } from './execute-all'
 
 import type { LintCommandOptions } from '@Types/commands'
+import type { FileChangedEventPayload } from '@Utils/watch-files'
 
 const lintAction = async (
   supervisor: ProcessSupervisor,

@@ -1,8 +1,10 @@
-import { Linter, type LinterInterface } from '@Types/lint'
+import { Linter } from '@Types/lint'
 
 import { eslint } from './eslint'
 import { markdownlint } from './markdownlint'
 import { stylelint } from './stylelint'
+
+import type { LinterInterface } from '@Types/lint'
 
 const linters: Record<Linter, LinterInterface> = {
   [Linter.ESLint]: eslint,

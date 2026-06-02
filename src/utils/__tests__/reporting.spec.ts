@@ -1,9 +1,11 @@
 import chalk from 'chalk'
 import { spaceLog } from 'space-log'
 
-import { Linter, type ReportSummary } from '@Types/lint'
+import { Linter } from '@Types/lint'
 
 import { logResults, logSummary, logSummaryBlock } from '../reporting'
+
+import type { ReportSummary } from '@Types/lint'
 
 jest.mock('chalk', () => ({
   bgGreen: {
