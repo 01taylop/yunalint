@@ -112,7 +112,7 @@ describe('notifyResults', () => {
   })
 
   it('does not throw if notifier fails', () => {
-    (notifier.notify as jest.Mock).mockImplementationOnce(() => {
+    jest.mocked(notifier.notify).mockImplementationOnce(() => {
       throw new Error('Notification failed')
     })
 

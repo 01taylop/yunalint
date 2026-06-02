@@ -26,9 +26,9 @@ jest.mock('chalk', () => ({
 
 jest.mock('space-log')
 
-describe('colourLog', () => {
+describe('reporting', () => {
 
-  const mockedConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {})
+  const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => true)
 
   const commonSummary: ReportSummary = {
     deprecatedRules: [],
@@ -40,7 +40,7 @@ describe('colourLog', () => {
     warningCount: 0,
   }
 
-  describe('results', () => {
+  describe('logResults', () => {
 
     it('returns if there are no results', () => {
       logResults({
@@ -48,7 +48,7 @@ describe('colourLog', () => {
         summary: commonSummary,
       })
 
-      expect(mockedConsoleLog).not.toHaveBeenCalled()
+      expect(mockConsoleLog).not.toHaveBeenCalled()
     })
 
     it('logs the results', () => {
@@ -72,12 +72,12 @@ describe('colourLog', () => {
       })
 
       // Info
-      expect(chalk.blue).toHaveBeenCalledOnceWith('\nLogging eslint results:')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(1, '\nLogging eslint results:')
+      expect(chalk.blue).toHaveBeenNthCalledWith(1, '\nLogging eslint results:')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(1, '\nLogging eslint results:')
 
       // File 1
       expect(chalk.underline).toHaveBeenNthCalledWith(1, 'CONTRIBUTING.md')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '\n_CONTRIBUTING.md_')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '\n_CONTRIBUTING.md_')
       expect(spaceLog).toHaveBeenNthCalledWith(1, {
         columnKeys: ['severity', 'position', 'message', 'rule'],
         spaceSize: 2,
@@ -85,29 +85,30 @@ describe('colourLog', () => {
 
       // File 2
       expect(chalk.underline).toHaveBeenNthCalledWith(2, 'README.md')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(3, '\n_README.md_')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(3, '\n_README.md_')
       expect(spaceLog).toHaveBeenNthCalledWith(2, {
         columnKeys: ['severity', 'position', 'message', 'rule'],
         spaceSize: 2,
       }, [commonResult, commonResult])
 
       // Log Count
-      expect(mockedConsoleLog).toHaveBeenCalledTimes(3)
+      expect(chalk.blue).toHaveBeenCalledTimes(1)
       expect(chalk.underline).toHaveBeenCalledTimes(2)
+      expect(mockConsoleLog).toHaveBeenCalledTimes(3)
       expect(spaceLog).toHaveBeenCalledTimes(2)
     })
 
   })
 
-  describe('summary', () => {
+  describe('logSummary', () => {
 
     let startTime: number
 
     const expectResult = () => {
       expect(chalk.cyan).toHaveBeenCalledWith('Finished eslint')
       expect(chalk.yellow).toHaveBeenCalledWith('[1 file, 1000ms]')
-      expect(mockedConsoleLog).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(1, '\nFinished eslint', '[1 file, 1000ms]')
+      expect(mockConsoleLog).toHaveBeenCalledTimes(2)
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(1, '\nFinished eslint', '[1 file, 1000ms]')
     }
 
     beforeEach(() => {
@@ -121,7 +122,7 @@ describe('colourLog', () => {
 
       expect(chalk.cyan).toHaveBeenCalledOnceWith('Finished eslint')
       expect(chalk.yellow).toHaveBeenCalledOnceWith('[1 file, 1000ms]')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('\nFinished eslint', '[1 file, 1000ms]')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('\nFinished eslint', '[1 file, 1000ms]')
     })
 
     it('logs the finished lint message along with the file count and duration (multiple files)', () => {
@@ -132,7 +133,7 @@ describe('colourLog', () => {
 
       expect(chalk.cyan).toHaveBeenCalledOnceWith('Finished eslint')
       expect(chalk.yellow).toHaveBeenCalledOnceWith('[7 files, 1000ms]')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('\nFinished eslint', '[7 files, 1000ms]')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('\nFinished eslint', '[7 files, 1000ms]')
     })
 
     it('logs the error count in red (single error)', () => {
@@ -143,7 +144,7 @@ describe('colourLog', () => {
 
       expectResult()
       expect(chalk.red).toHaveBeenCalledWith('  1 error')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  1 error')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  1 error')
     })
 
     it('logs the error count in red (multiple errors)', () => {
@@ -154,7 +155,7 @@ describe('colourLog', () => {
 
       expectResult()
       expect(chalk.red).toHaveBeenCalledWith('  2 errors')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  2 errors')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  2 errors')
     })
 
     it('logs the error count in red with the fixable error count in dim', () => {
@@ -167,7 +168,7 @@ describe('colourLog', () => {
       expectResult()
       expect(chalk.red).toHaveBeenCalledWith('  3 errors')
       expect(chalk.dim).toHaveBeenCalledWith(' (2 fixable)')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  3 errors (2 fixable)')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  3 errors (2 fixable)')
     })
 
     it('logs the warning count in yellow (single warning)', () => {
@@ -178,7 +179,7 @@ describe('colourLog', () => {
 
       expectResult()
       expect(chalk.yellow).toHaveBeenCalledWith('  1 warning')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  1 warning')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  1 warning')
     })
 
     it('logs the warning count in yellow (multiple warnings)', () => {
@@ -189,7 +190,7 @@ describe('colourLog', () => {
 
       expectResult()
       expect(chalk.yellow).toHaveBeenCalledWith('  5 warnings')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  5 warnings')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  5 warnings')
     })
 
     it('logs the warning count in yellow with the fixable warning count in dim', () => {
@@ -202,7 +203,7 @@ describe('colourLog', () => {
       expectResult()
       expect(chalk.yellow).toHaveBeenCalledWith('  6 warnings')
       expect(chalk.dim).toHaveBeenCalledWith(' (3 fixable)')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  6 warnings (3 fixable)')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  6 warnings (3 fixable)')
     })
 
     it('logs the deprecated rule count in magenta and the list in dim (single deprecation)', () => {
@@ -214,7 +215,7 @@ describe('colourLog', () => {
       expectResult()
       expect(chalk.magenta).toHaveBeenCalledWith('  1 deprecation')
       expect(chalk.dim).toHaveBeenCalledWith(' [foo]')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  1 deprecation [foo]')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  1 deprecation [foo]')
     })
 
     it('logs the deprecated rule count in magenta and the list alphabetised in dim (multiple deprecations)', () => {
@@ -226,7 +227,7 @@ describe('colourLog', () => {
       expectResult()
       expect(chalk.magenta).toHaveBeenCalledWith('  3 deprecations')
       expect(chalk.dim).toHaveBeenCalledWith(' [bar, baz, foo]')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  3 deprecations [bar, baz, foo]')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  3 deprecations [bar, baz, foo]')
     })
 
     it('logs everything together', () => {
@@ -246,12 +247,12 @@ describe('colourLog', () => {
       expect(chalk.dim).toHaveBeenCalledWith(' (2 fixable)')
       expect(chalk.magenta).toHaveBeenCalledWith('  3 deprecations')
       expect(chalk.dim).toHaveBeenCalledWith(' [bar, baz, foo]')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '  2 errors (1 fixable)\n  3 warnings (2 fixable)\n  3 deprecations [bar, baz, foo]')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '  2 errors (1 fixable)\n  3 warnings (2 fixable)\n  3 deprecations [bar, baz, foo]')
     })
 
   })
 
-  describe('summaryBlock', () => {
+  describe('logSummaryBlock', () => {
 
     it('logs the error count in a red background', () => {
       logSummaryBlock({
@@ -260,7 +261,7 @@ describe('colourLog', () => {
       })
 
       expect(chalk.bgRed.black).toHaveBeenCalledOnceWith(' 1 ESLint Error ')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('\n🚨  1 ESLint Error ')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('\n🚨  1 ESLint Error ')
     })
 
     it('logs the warning count in a yellow background', () => {
@@ -270,7 +271,7 @@ describe('colourLog', () => {
       })
 
       expect(chalk.bgYellow.black).toHaveBeenCalledOnceWith(' 1 ESLint Warning ')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('\n🚧  1 ESLint Warning ')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('\n🚧  1 ESLint Warning ')
     })
 
     it('logs the both the error and warning counts if both are present', () => {
@@ -282,16 +283,16 @@ describe('colourLog', () => {
 
       expect(chalk.bgRed.black).toHaveBeenCalledOnceWith(' 2 ESLint Errors ')
       expect(chalk.bgYellow.black).toHaveBeenCalledOnceWith(' 3 ESLint Warnings ')
-      expect(mockedConsoleLog).toHaveBeenCalledTimes(2)
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(1, '\n🚨  2 ESLint Errors ')
-      expect(mockedConsoleLog).toHaveBeenNthCalledWith(2, '\n🚧  3 ESLint Warnings ')
+      expect(mockConsoleLog).toHaveBeenCalledTimes(2)
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(1, '\n🚨  2 ESLint Errors ')
+      expect(mockConsoleLog).toHaveBeenNthCalledWith(2, '\n🚧  3 ESLint Warnings ')
     })
 
     it('logs a success message if there are no errors or warnings', () => {
       logSummaryBlock(commonSummary)
 
       expect(chalk.bgGreen.black).toHaveBeenCalledOnceWith(' ESLint Success! ')
-      expect(mockedConsoleLog).toHaveBeenCalledOnceWith('\n✅  ESLint Success! ')
+      expect(mockConsoleLog).toHaveBeenCalledOnceWith('\n✅  ESLint Success! ')
     })
 
   })
