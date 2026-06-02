@@ -1,23 +1,24 @@
+import { lint } from 'markdownlint/promise'
+
 import { Linter } from '@Types/lint'
 import colourLog from '@Utils/colour-log'
 
 import { fixFile } from './fix-file'
 import { loadConfig } from './load-config'
-import { markdownlintAsync } from './markdownlint-async'
 import { processResults } from './process-results'
 
 import type { LintFilesOptions, LintReport } from '@Types/lint'
 
 const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> => {
   try {
-    const config = loadConfig()
+    const config = await loadConfig()
     const markdownlintOptions = {
       config,
       files,
     }
 
     // Run Markdownlint
-    let results = await markdownlintAsync(markdownlintOptions)
+    let results = await lint(markdownlintOptions)
 
     // Fix errors, then re-run to ensure the report reflects the fixed state
     if (fix) {
@@ -31,7 +32,7 @@ const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> 
       }
 
       if (filesWereFixed) {
-        results = await markdownlintAsync(markdownlintOptions)
+        results = await lint(markdownlintOptions)
       }
     }
 
@@ -46,4 +47,6 @@ const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> 
   }
 }
 
-export default lintFiles
+export {
+  lintFiles,
+}

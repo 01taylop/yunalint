@@ -2,6 +2,15 @@
  * MOCKS AND SPIES
  */
 
+jest.mock('markdownlint', () => ({
+  applyFixes: jest.fn(),
+}))
+
+jest.mock('markdownlint/promise', () => ({
+  lint: jest.fn(),
+  readConfig: jest.fn(),
+}))
+
 jest.mock('@Utils/colour-log')
 
 jest.spyOn(process, 'exit').mockImplementation(code => {

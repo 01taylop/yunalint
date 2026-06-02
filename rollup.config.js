@@ -14,15 +14,15 @@ const COPY_FILES = [
   'config/markdownlint.json',
 ]
 
-const EXTERNAL = [
-  ...Object.keys(dependencies || {}),
-  ...Object.keys(peerDependencies || {}),
-]
-
 const OUTPUT_DIR = 'lib'
 
+const isExternal = id => [
+  ...Object.keys(dependencies || {}),
+  ...Object.keys(peerDependencies || {}),
+].some(dep => id === dep || id.startsWith(`${dep}/`))
+
 const createConfig = (configFile, format) => ({
-  external: EXTERNAL,
+  external: isExternal,
   input: configFile,
   output: {
     exports: 'default',
@@ -36,7 +36,7 @@ const createConfig = (configFile, format) => ({
 })
 
 export default defineConfig([{
-  external: EXTERNAL,
+  external: isExternal,
   input: 'src/index.ts',
   output: {
     file: `${OUTPUT_DIR}/index.js`,

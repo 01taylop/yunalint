@@ -237,4 +237,41 @@ describe('processResults', () => {
     })
   })
 
+  it('sorts results by lineNumber and then by rule name when rules only have one name', () => {
+    const lintResults: LintResults = {
+      'file.md': [{
+        ...markdownlintError,
+        lineNumber: 1,
+        ruleNames: ['MD002'],
+      }, {
+        ...markdownlintError,
+        lineNumber: 1,
+        ruleNames: ['MD001'],
+      }],
+    }
+
+    const report = processResults(lintResults)
+
+    expect(report).toStrictEqual({
+      results: {
+        'file.md': [{
+          ...commonResult,
+          rule: 'MD001',
+        }, {
+          ...commonResult,
+          rule: 'MD002',
+        }],
+      },
+      summary: {
+        deprecatedRules: [],
+        errorCount: 2,
+        fileCount: 1,
+        fixableErrorCount: 0,
+        fixableWarningCount: 0,
+        linter: 'Markdownlint',
+        warningCount: 0,
+      },
+    })
+  })
+
 })

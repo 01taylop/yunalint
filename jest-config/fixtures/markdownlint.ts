@@ -4,10 +4,12 @@ const markdownlintError: LintError = {
   errorContext: 'test-error-context',
   errorDetail: 'test-error-detail',
   errorRange: [1, 2],
+  fixInfo: null,
   lineNumber: 1,
   ruleDescription: 'test-rule-description',
   ruleInformation: 'test-rule-information',
   ruleNames: ['MD000', 'test-rule-name'],
+  severity: 'error',
 }
 
 const fixableMarkdownlintError: LintError = {

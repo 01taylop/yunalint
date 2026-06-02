@@ -1,14 +1,14 @@
+import { lint } from 'markdownlint/promise'
+
 import { fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
 import colourLog from '@Utils/colour-log'
 
 import { fixFile } from '../fix-file'
-import lintFiles from '../lint-files'
+import { lintFiles } from '../lint-files'
 import { loadConfig } from '../load-config'
-import { markdownlintAsync } from '../markdownlint-async'
 
 jest.mock('../fix-file')
 jest.mock('../load-config')
-jest.mock('../markdownlint-async')
 
 describe('lintFiles', () => {
 
@@ -23,9 +23,9 @@ describe('lintFiles', () => {
     files: ['README.md'],
   }
 
-  const fixFileMock = jest.mocked(fixFile).mockImplementation(() => {})
-  const loadConfigMock = jest.mocked(loadConfig).mockReturnValue({ default: true })
-  const markdownlintMock = jest.mocked(markdownlintAsync).mockResolvedValue({ 'README.md': [] })
+  const mockLint = jest.mocked(lint).mockResolvedValue({ 'README.md': [] })
+  const mockFixFile = jest.mocked(fixFile).mockImplementation(() => {})
+  const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue({ default: true })
 
   it('lints files once when `fix` is false', async () => {
     expect.assertions(3)
@@ -35,9 +35,9 @@ describe('lintFiles', () => {
       fix: false
     })
 
-    expect(loadConfigMock).toHaveBeenCalledTimes(1)
-    expect(markdownlintMock).toHaveBeenCalledTimes(1)
-    expect(markdownlintMock).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
+    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockLint).toHaveBeenCalledTimes(1)
+    expect(mockLint).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
   })
 
   test.each([
@@ -47,22 +47,22 @@ describe('lintFiles', () => {
   ])('lints files once when `fix` is true but %s', async (_title, mockReturnValue) => {
     expect.assertions(3)
 
-    markdownlintMock.mockResolvedValueOnce(mockReturnValue)
+    mockLint.mockResolvedValueOnce(mockReturnValue)
 
     await lintFiles({
       ...commonLintOptions,
       fix: true
     })
 
-    expect(loadConfigMock).toHaveBeenCalledTimes(1)
-    expect(markdownlintMock).toHaveBeenCalledTimes(1)
-    expect(markdownlintMock).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
+    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockLint).toHaveBeenCalledTimes(1)
+    expect(mockLint).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
   })
 
   it('lints files twice when `fix` is true and errors are fixable', async () => {
     expect.assertions(6)
 
-    markdownlintMock
+    mockLint
       .mockResolvedValueOnce({ 'CONTRIBUTING.md': [markdownlintError], 'README.md': [fixableMarkdownlintError] })
       .mockResolvedValueOnce({ 'CONTRIBUTING.md': [markdownlintError], 'README.md': [] })
 
@@ -71,12 +71,12 @@ describe('lintFiles', () => {
       fix: true
     })
 
-    expect(loadConfigMock).toHaveBeenCalledTimes(1)
-    expect(markdownlintMock).toHaveBeenCalledTimes(2)
-    expect(markdownlintMock).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
-    expect(markdownlintMock).toHaveBeenNthCalledWith(2, commonMarkdownlintOptions)
-    expect(fixFileMock).toHaveBeenCalledTimes(1)
-    expect(fixFileMock).toHaveBeenCalledWith({
+    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockLint).toHaveBeenCalledTimes(2)
+    expect(mockLint).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
+    expect(mockLint).toHaveBeenNthCalledWith(2, commonMarkdownlintOptions)
+    expect(mockFixFile).toHaveBeenCalledTimes(1)
+    expect(mockFixFile).toHaveBeenCalledWith({
       errors: [fixableMarkdownlintError],
       file: 'README.md',
     })
@@ -104,7 +104,7 @@ describe('lintFiles', () => {
   it('returns a report when Markdownlint successfully lints after fixing errors', async () => {
     expect.assertions(1)
 
-    markdownlintMock
+    mockLint
       .mockResolvedValueOnce({ 'CONTRIBUTING.md': [markdownlintError], 'README.md': [fixableMarkdownlintError] })
       .mockResolvedValueOnce({ 'CONTRIBUTING.md': [markdownlintError], 'README.md': [] })
 
@@ -129,12 +129,15 @@ describe('lintFiles', () => {
     })
   })
 
-  it('exits the process when `markdownlint` throws an error', async () => {
+  test.each([
+    ['loadConfig', mockLoadConfig],
+    ['lint', mockLint],
+  ])('exits the process when `%s` throws an error', async (_name, mock) => {
     expect.assertions(2)
 
     const error = new Error('Test error')
 
-    markdownlintMock.mockRejectedValueOnce(error)
+    mock.mockRejectedValueOnce(error)
 
     try {
       await lintFiles(commonLintOptions)

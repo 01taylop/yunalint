@@ -28,7 +28,7 @@ const processResults = (results: LintResults): LintReport => {
 
     // Process errors
     errors
-      .sort((a, b) => a.lineNumber - b.lineNumber || a.ruleNames[1].localeCompare(b.ruleNames[1]))
+      .sort((a, b) => a.lineNumber - b.lineNumber || (a.ruleNames.at(1) ?? a.ruleNames[0]).localeCompare(b.ruleNames.at(1) ?? b.ruleNames[0]))
       .forEach(({ errorDetail, errorRange, fixInfo, lineNumber, ruleDescription, ruleNames }) => {
         reportResults[file].push(formatResult({
           column: errorRange?.length ? errorRange[0] : undefined,
