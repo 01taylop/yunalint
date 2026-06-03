@@ -1,4 +1,4 @@
-import stylelint from 'stylelint'
+import { resolveConfig } from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
 
@@ -12,7 +12,7 @@ describe('loadConfig', () => {
 
     const customConfig = { rules: { 'no-empty-source': true } }
 
-    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(customConfig)
+    jest.mocked(resolveConfig).mockResolvedValueOnce(customConfig)
 
     const config = await loadConfig()
 
@@ -23,7 +23,7 @@ describe('loadConfig', () => {
   it('returns the default config if no custom config exists', async () => {
     expect.assertions(2)
 
-    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(undefined)
+    jest.mocked(resolveConfig).mockResolvedValueOnce(undefined)
 
     const config = await loadConfig()
 
@@ -31,12 +31,12 @@ describe('loadConfig', () => {
     expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
   })
 
-  it('exits the process when `stylelint.resolveConfig` throws an error', async () => {
+  it('exits the process when `resolveConfig` throws an error', async () => {
     expect.assertions(2)
 
     const error = new Error('Test error')
 
-    jest.mocked(stylelint.resolveConfig).mockImplementation(() => {
+    jest.mocked(resolveConfig).mockImplementation(() => {
       throw error
     })
 

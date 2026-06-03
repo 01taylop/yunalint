@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import stylelint from 'stylelint'
+import { lint } from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
 
@@ -41,8 +41,7 @@ describe('lintFiles', () => {
     warnings: [],
   }]
 
-  const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue(undefined)
-  const mockStylelint = jest.mocked(stylelint.lint).mockImplementation(async () => ({
+  const mockLint = jest.mocked(lint).mockImplementation(async () => ({
     cwd: '',
     errored: false,
     report: '',
@@ -50,6 +49,7 @@ describe('lintFiles', () => {
     results: mockLintResults,
     ruleMetadata: {},
   }))
+  const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue(undefined)
 
   it('lints with no config when `loadConfig` returns undefined', async () => {
     expect.assertions(2)
@@ -57,7 +57,7 @@ describe('lintFiles', () => {
     await lintFiles(commonLintOptions)
 
     expect(mockLoadConfig).toHaveBeenCalledTimes(1)
-    expect(mockStylelint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
   it('lints with config returned by `loadConfig`', async () => {
@@ -70,7 +70,7 @@ describe('lintFiles', () => {
     await lintFiles(commonLintOptions)
 
     expect(mockLoadConfig).toHaveBeenCalledTimes(1)
-    expect(mockStylelint).toHaveBeenCalledOnceWith({
+    expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       config,
     })
@@ -84,7 +84,7 @@ describe('lintFiles', () => {
       cache: false,
     })
 
-    expect(mockStylelint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
   it('lints files with caching enabled when `cache` is true', async () => {
@@ -95,7 +95,7 @@ describe('lintFiles', () => {
       cache: true,
     })
 
-    expect(mockStylelint).toHaveBeenCalledOnceWith({
+    expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       cache: true,
       cacheLocation: expect.stringContaining('.cache/lint/stylelint'),
@@ -110,7 +110,7 @@ describe('lintFiles', () => {
       fix: false
     })
 
-    expect(mockStylelint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
   it('lints files with fix enabled when `fix` is true', async () => {
@@ -121,7 +121,7 @@ describe('lintFiles', () => {
       fix: true
     })
 
-    expect(mockStylelint).toHaveBeenCalledOnceWith({
+    expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       fix: true,
     })
@@ -132,7 +132,7 @@ describe('lintFiles', () => {
 
     const result = await lintFiles(commonLintOptions)
 
-    expect(mockStylelint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
     expect(result).toStrictEqual({
       results: {},
       summary: {
@@ -152,7 +152,7 @@ describe('lintFiles', () => {
 
     const error = new Error('Test error')
 
-    mockStylelint.mockRejectedValueOnce(error)
+    mockLint.mockRejectedValueOnce(error)
 
     try {
       await lintFiles(commonLintOptions)
