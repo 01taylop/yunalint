@@ -3,7 +3,9 @@ import postcssScss from 'postcss-scss'
 
 import Rules from './stylelint/rules'
 
-export default {
+import type { Config } from 'stylelint'
+
+const config: Config = {
   extends: [
     'stylelint-config-property-sort-order-smacss',
   ],
@@ -50,3 +52,5 @@ export default {
     ...Rules.Stylistic,
   },
 }
+
+export default config

@@ -5,8 +5,11 @@ import stylelint from 'stylelint'
 import { colourLog } from '@Utils/colour-log'
 
 import { lintFiles } from '../lint-files'
+import { loadConfig } from '../load-config'
 
 import type { LintResult } from 'stylelint'
+
+jest.mock('../load-config')
 
 describe('lintFiles', () => {
 
@@ -20,7 +23,6 @@ describe('lintFiles', () => {
     allowEmptyInput: true,
     cache: false,
     cacheLocation: undefined,
-    config: expect.any(Object),
     files: ['index.css'],
     fix: false,
     quietDeprecationWarnings: true,
@@ -39,6 +41,7 @@ describe('lintFiles', () => {
     warnings: [],
   }]
 
+  const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue(undefined)
   const mockStylelint = jest.mocked(stylelint.lint).mockImplementation(async () => ({
     cwd: '',
     errored: false,
@@ -47,6 +50,31 @@ describe('lintFiles', () => {
     results: mockLintResults,
     ruleMetadata: {},
   }))
+
+  it('lints with no config when `loadConfig` returns undefined', async () => {
+    expect.assertions(2)
+
+    await lintFiles(commonLintOptions)
+
+    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockStylelint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+  })
+
+  it('lints with config returned by `loadConfig`', async () => {
+    expect.assertions(2)
+
+    const config = { rules: { 'no-empty-source': true } }
+
+    mockLoadConfig.mockResolvedValueOnce(config)
+
+    await lintFiles(commonLintOptions)
+
+    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockStylelint).toHaveBeenCalledOnceWith({
+      ...commonStylelintOptions,
+      config,
+    })
+  })
 
   it('lints files with caching disabled when `cache` is false', async () => {
     expect.assertions(1)

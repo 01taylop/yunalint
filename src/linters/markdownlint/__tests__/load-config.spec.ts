@@ -15,14 +15,16 @@ describe('loadConfig', () => {
   it('returns the custom config if it exists', async () => {
     expect.assertions(3)
 
+    const customConfig = { default: true }
+
     jest.mocked(fs.existsSync).mockReturnValueOnce(true)
-    jest.mocked(readConfig).mockResolvedValue({ default: true })
+    jest.mocked(readConfig).mockResolvedValue(customConfig)
 
     const config = await loadConfig()
 
-    expect(readConfig).toHaveBeenCalledWith(path.join(process.cwd(), '.markdownlint.json'))
-    expect(colourLog.configDebug).toHaveBeenCalledWith('Using custom Markdownlint config:', { default: true })
-    expect(config).toStrictEqual({ default: true })
+    expect(readConfig).toHaveBeenCalledOnceWith(path.join(process.cwd(), '.markdownlint.json'))
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using custom Markdownlint config:', customConfig)
+    expect(config).toStrictEqual(customConfig)
   })
 
   it('returns the default config if no custom config exists', async () => {
@@ -33,7 +35,7 @@ describe('loadConfig', () => {
     const config = await loadConfig()
 
     expect(readConfig).not.toHaveBeenCalled()
-    expect(colourLog.configDebug).toHaveBeenCalledWith('Using default Markdownlint config:', expect.objectContaining(defaultConfig))
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using default Markdownlint config:', expect.objectContaining(defaultConfig))
     expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
   })
 

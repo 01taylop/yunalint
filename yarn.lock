@@ -2580,6 +2580,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/postcss-less@npm:4.0.7":
+  version: 4.0.7
+  resolution: "@types/postcss-less@npm:4.0.7"
+  dependencies:
+    postcss: "npm:^8.1.2"
+  checksum: 10c0/c7f0c0078bfa35879c498e90f269a2bec0b28834173cec70f2f1a248965b59b81ff541f9660cd8e80554072bc6b1153992637f967e74984b27a69ec80cb5a7c9
+  languageName: node
+  linkType: hard
+
 "@types/resolve@npm:1.20.2":
   version: 1.20.2
   resolution: "@types/resolve@npm:1.20.2"
@@ -7273,6 +7282,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.1.2, postcss@npm:^8.5.14":
+  version: 8.5.15
+  resolution: "postcss@npm:8.5.15"
+  dependencies:
+    nanoid: "npm:^3.3.12"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/7f2e63ae22fbe43aace1bf652bd99da4e90737c64194d49e51ddc9cd0f9e51ff2861a7d734379b494deffa03a880a5c65eec70bc29ee9ebaa7136dde3eee8f31
+  languageName: node
+  linkType: hard
+
 "postcss@npm:^8.4.32":
   version: 8.4.40
   resolution: "postcss@npm:8.4.40"
@@ -7292,17 +7312,6 @@ __metadata:
     picocolors: "npm:^1.0.1"
     source-map-js: "npm:^1.2.0"
   checksum: 10c0/ad6f8b9b1157d678560373696109745ab97a947d449f8a997acac41c7f1e4c0f3ca4b092d6df1387f430f2c9a319987b1780dbdc27e35800a88cde9b606c1e8f
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.14":
-  version: 8.5.15
-  resolution: "postcss@npm:8.5.15"
-  dependencies:
-    nanoid: "npm:^3.3.12"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10c0/7f2e63ae22fbe43aace1bf652bd99da4e90737c64194d49e51ddc9cd0f9e51ff2861a7d734379b494deffa03a880a5c65eec70bc29ee9ebaa7136dde3eee8f31
   languageName: node
   linkType: hard
 
@@ -8923,6 +8932,7 @@ __metadata:
     "@types/eslint": "npm:9.6.1"
     "@types/jest": "npm:30.0.0"
     "@types/node-notifier": "npm:8.0.5"
+    "@types/postcss-less": "npm:4.0.7"
     chalk: "npm:5.6.2"
     chokidar: "npm:3.6.0"
     commander: "npm:12.1.0"
