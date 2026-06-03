@@ -9,10 +9,13 @@ import defaultConfig from '../../../config/stylelint.config'
 
 import type { Config } from 'stylelint'
 
-const loadConfig = async (): Promise<Config | undefined> => {
+const loadConfig = async (filePath?: string): Promise<Config | undefined> => {
   try {
     // Custom config
-    const customConfig = await resolveConfig(path.join(process.cwd(), 'index.css'))
+    const searchPath = filePath
+      ? path.resolve(filePath)
+      : path.join(process.cwd(), 'style.css')
+    const customConfig = await resolveConfig(searchPath)
     if (customConfig) {
       colourLog.configDebug(`Using custom ${Linter.Stylelint} config:`, customConfig)
       return undefined // Stylelint will auto-discover it

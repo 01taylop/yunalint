@@ -56,7 +56,7 @@ describe('lintFiles', () => {
 
     await lintFiles(commonLintOptions)
 
-    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockLoadConfig).toHaveBeenCalledOnceWith('index.css')
     expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
@@ -69,7 +69,7 @@ describe('lintFiles', () => {
 
     await lintFiles(commonLintOptions)
 
-    expect(mockLoadConfig).toHaveBeenCalledTimes(1)
+    expect(mockLoadConfig).toHaveBeenCalledOnceWith('index.css')
     expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       config,

@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 import { resolveConfig } from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
@@ -7,8 +9,22 @@ import { loadConfig } from '../load-config'
 
 describe('loadConfig', () => {
 
-  it('returns undefined if custom config exists', async () => {
-    expect.assertions(2)
+  it('returns undefined if custom config exists for a given file', async () => {
+    expect.assertions(3)
+
+    const customConfig = { rules: { 'no-empty-source': true } }
+
+    jest.mocked(resolveConfig).mockResolvedValueOnce(customConfig)
+
+    const config = await loadConfig('index.css')
+
+    expect(resolveConfig).toHaveBeenCalledOnceWith(path.join(process.cwd(), 'index.css'))
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using custom Stylelint config:', customConfig)
+    expect(config).toStrictEqual(undefined)
+  })
+
+  it('returns undefined if custom config exists when no file is provided', async () => {
+    expect.assertions(3)
 
     const customConfig = { rules: { 'no-empty-source': true } }
 
@@ -16,6 +32,7 @@ describe('loadConfig', () => {
 
     const config = await loadConfig()
 
+    expect(resolveConfig).toHaveBeenCalledOnceWith(path.join(process.cwd(), 'style.css'))
     expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using custom Stylelint config:', customConfig)
     expect(config).toStrictEqual(undefined)
   })

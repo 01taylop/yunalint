@@ -11,7 +11,7 @@ import type { LintFilesOptions, LintReport } from '@Types/lint'
 
 const lintFiles = async ({ cache, files, fix }: LintFilesOptions): Promise<LintReport> => {
   try {
-    const config = await loadConfig()
+    const config = await loadConfig(files[0])
 
     // Run Stylelint
     const { results, ruleMetadata } = await lint({
