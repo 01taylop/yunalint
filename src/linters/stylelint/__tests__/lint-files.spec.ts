@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { lint } from 'stylelint'
+import stylelint from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
 
@@ -41,7 +41,7 @@ describe('lintFiles', () => {
     warnings: [],
   }]
 
-  const mockLint = jest.mocked(lint).mockImplementation(async () => ({
+  const mockLint = jest.mocked(stylelint.lint).mockImplementation(async () => ({
     cwd: '',
     errored: false,
     report: '',

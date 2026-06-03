@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { resolveConfig } from 'stylelint'
+import stylelint from 'stylelint'
 
 import { Linter } from '@Types/lint'
 import { colourLog } from '@Utils/colour-log'
@@ -15,7 +15,7 @@ const loadConfig = async (filePath?: string): Promise<Config | undefined> => {
     const searchPath = filePath
       ? path.resolve(filePath)
       : path.join(process.cwd(), 'style.css')
-    const customConfig = await resolveConfig(searchPath)
+    const customConfig = await stylelint.resolveConfig(searchPath)
     if (customConfig) {
       colourLog.configDebug(`Using custom ${Linter.Stylelint} config:`, customConfig)
       return undefined // Stylelint will auto-discover it

@@ -1,4 +1,4 @@
-import { lint } from 'stylelint'
+import stylelint from 'stylelint'
 
 import { Linter } from '@Types/lint'
 import { colourLog } from '@Utils/colour-log'
@@ -14,7 +14,7 @@ const lintFiles = async ({ cache, files, fix }: LintFilesOptions): Promise<LintR
     const config = await loadConfig(files[0])
 
     // Run Stylelint
-    const { results, ruleMetadata } = await lint({
+    const { results, ruleMetadata } = await stylelint.lint({
       ...(config && { config }),
       allowEmptyInput: true,
       cache,

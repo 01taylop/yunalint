@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { resolveConfig } from 'stylelint'
+import stylelint from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
 
@@ -12,12 +12,12 @@ describe('loadConfig', () => {
   test.each([
     ['a file is provided', 'index.css', path.join(process.cwd(), 'index.css')],
     ['no file is provided', undefined, path.join(process.cwd(), 'style.css')],
-  ])('calls `resolveConfig` with the correct search path when %s', async (_title, filePath, expectedPath) => {
+  ])('calls `stylelint.resolveConfig` with the correct search path when %s', async (_title, filePath, expectedPath) => {
     expect.assertions(1)
 
     await loadConfig(filePath)
 
-    expect(resolveConfig).toHaveBeenCalledOnceWith(expectedPath)
+    expect(stylelint.resolveConfig).toHaveBeenCalledOnceWith(expectedPath)
   })
 
   it('returns undefined if custom config exists', async () => {
@@ -25,7 +25,7 @@ describe('loadConfig', () => {
 
     const customConfig = { rules: { 'no-empty-source': true } }
 
-    jest.mocked(resolveConfig).mockResolvedValueOnce(customConfig)
+    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(customConfig)
 
     const config = await loadConfig('index.css')
 
@@ -36,7 +36,7 @@ describe('loadConfig', () => {
   it('returns the default config if no custom config exists', async () => {
     expect.assertions(2)
 
-    jest.mocked(resolveConfig).mockResolvedValueOnce(undefined)
+    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(undefined)
 
     const config = await loadConfig()
 
@@ -44,12 +44,12 @@ describe('loadConfig', () => {
     expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
   })
 
-  it('exits the process when `resolveConfig` throws an error', async () => {
+  it('exits the process when `stylelint.resolveConfig` throws an error', async () => {
     expect.assertions(2)
 
     const error = new Error('Test error')
 
-    jest.mocked(resolveConfig).mockImplementation(() => {
+    jest.mocked(stylelint.resolveConfig).mockImplementation(() => {
       throw error
     })
 
