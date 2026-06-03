@@ -20,8 +20,8 @@ const config: Config = {
       'import-notation': 'string',
       'media-query-no-invalid': null,
       'no-invalid-position-at-import-rule': [true, {
-				ignoreAtRules: ['use', 'forward'],
-			}],
+        ignoreAtRules: ['use', 'forward'],
+      }],
       'property-no-unknown': null, // scss/property-no-unknown
       ...Rules.Scss,
     },
@@ -36,8 +36,8 @@ const config: Config = {
       'import-notation': 'string',
       'media-query-no-invalid': null,
       'no-invalid-position-at-import-rule': [true, {
-				ignoreAtRules: ['use', 'forward'],
-			}],
+        ignoreAtRules: ['use', 'forward'],
+      }],
     },
   }],
   plugins: [

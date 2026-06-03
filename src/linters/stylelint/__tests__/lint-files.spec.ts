@@ -147,12 +147,15 @@ describe('lintFiles', () => {
     })
   })
 
-  it('exits the process when `stylelint.lint` throws an error', async () => {
+  test.each([
+    ['loadConfig', mockLoadConfig],
+    ['lint', mockLint],
+  ])('exits the process when `%s` throws an error', async (_name, mock) => {
     expect.assertions(2)
 
     const error = new Error('Test error')
 
-    mockLint.mockRejectedValueOnce(error)
+    mock.mockRejectedValueOnce(error)
 
     try {
       await lintFiles(commonLintOptions)

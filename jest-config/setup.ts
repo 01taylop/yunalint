@@ -12,8 +12,11 @@ jest.mock('markdownlint/promise', () => ({
 }))
 
 jest.mock('stylelint', () => ({
-  lint: jest.fn(),
-  resolveConfig: jest.fn(),
+  __esModule: true,
+  default: {
+    lint: jest.fn(),
+    resolveConfig: jest.fn(),
+  },
 }))
 
 jest.mock('@Utils/colour-log')
