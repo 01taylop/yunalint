@@ -6,9 +6,7 @@ import { formatResult } from '@Utils/format-result'
 import type { LintResult, RuleMeta } from 'stylelint'
 import type { LintReport, ReportResults, ReportSummary } from '@Types/lint'
 
-type RuleMetadata = { [ruleName: string]: Partial<RuleMeta> }
-
-const processResults = (results: Array<LintResult>, ruleMetadata: RuleMetadata): LintReport => {
+const processResults = (results: Array<LintResult>, ruleMetadata: Record<string, Partial<RuleMeta>>): LintReport => {
   const reportResults: ReportResults = {}
   const reportSummary: ReportSummary = {
     deprecatedRules: [],

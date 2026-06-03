@@ -75,7 +75,7 @@ describe('lintFiles', () => {
     })
   })
 
-  it('lints files with cacheing disabled when `cache` is false', async () => {
+  it('lints files with caching disabled when `cache` is false', async () => {
     expect.assertions(2)
 
     await lintFiles({
@@ -87,7 +87,7 @@ describe('lintFiles', () => {
     expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
   })
 
-  it('lints files with cacheing enabled when `cache` is true', async () => {
+  it('lints files with caching enabled when `cache` is true', async () => {
     expect.assertions(2)
 
     await lintFiles({

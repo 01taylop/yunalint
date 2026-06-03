@@ -8,10 +8,6 @@ import { lintFiles } from '../lint-files'
 
 import type { LintResult } from 'stylelint'
 
-jest.mock('stylelint', () => ({
-  lint: jest.fn(),
-}))
-
 describe('lintFiles', () => {
 
   const commonLintOptions = {
@@ -52,7 +48,7 @@ describe('lintFiles', () => {
     ruleMetadata: {},
   }))
 
-  it('lints files with cacheing disabled when `cache` is false', async () => {
+  it('lints files with caching disabled when `cache` is false', async () => {
     expect.assertions(1)
 
     await lintFiles({
@@ -63,7 +59,7 @@ describe('lintFiles', () => {
     expect(stylelintLintMock).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
-  it('lints files with cacheing enabled when `cache` is true', async () => {
+  it('lints files with caching enabled when `cache` is true', async () => {
     expect.assertions(1)
 
     await lintFiles({
