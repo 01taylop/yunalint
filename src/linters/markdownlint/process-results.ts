@@ -23,23 +23,28 @@ const processResults = (results: LintResults): LintReport => {
 
     reportResults[file] = []
 
-    // Aggregate counts
-    reportSummary.errorCount += errors.length
-
     // Process errors
     errors
       .sort((a, b) => a.lineNumber - b.lineNumber || (a.ruleNames.at(1) ?? a.ruleNames[0]).localeCompare(b.ruleNames.at(1) ?? b.ruleNames[0]))
-      .forEach(({ errorDetail, errorRange, fixInfo, lineNumber, ruleDescription, ruleNames }) => {
+      .forEach(({ errorDetail, errorRange, fixInfo, lineNumber, ruleDescription, ruleNames, severity }) => {
+        const isWarning = severity === 'warning'
+
         reportResults[file].push(formatResult({
           column: errorRange?.length ? errorRange[0] : undefined,
           line: lineNumber,
           message: errorDetail?.length ? `${ruleDescription}: ${errorDetail}` : ruleDescription,
           rule: ruleNames.at(1) ?? ruleNames[0],
-          severity: RuleSeverity.ERROR,
+          severity: isWarning ? RuleSeverity.WARNING : RuleSeverity.ERROR,
         }))
 
+        // Aggregate counts
+        reportSummary[isWarning ? 'warningCount' : 'errorCount'] += 1
         if (fixInfo) {
-          reportSummary.fixableErrorCount += 1
+          if (isWarning) {
+            reportSummary.fixableWarningCount += 1
+          } else {
+            reportSummary.fixableErrorCount += 1
+          }
         }
       })
   })

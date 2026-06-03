@@ -23,7 +23,7 @@ describe('lintFiles', () => {
     fix: false,
   }
 
-  const mockedLintResults: Array<ESLint.LintResult> = [{
+  const mockLintResults: Array<ESLint.LintResult> = [{
     errorCount: 0,
     fatalErrorCount: 0,
     filePath: path.join(process.cwd(), 'index.ts'),
@@ -35,16 +35,16 @@ describe('lintFiles', () => {
     warningCount: 0,
   }]
 
-  const lintFilesMock = jest.mocked(ESLint.prototype.lintFiles).mockImplementation(async () => mockedLintResults)
-  const loadESLintMock = jest.mocked(loadESLint).mockResolvedValue(ESLint)
-  const outputFixesMock = jest.mocked(ESLint.outputFixes)
+  const mockESLintFiles = jest.mocked(ESLint.prototype.lintFiles).mockImplementation(async () => mockLintResults)
+  const mockLoadESLint = jest.mocked(loadESLint).mockResolvedValue(ESLint)
+  const mockOutputFixes = jest.mocked(ESLint.outputFixes)
 
   it('creates a new ESLint instance using flat config by default', async () => {
     expect.assertions(1)
 
     await lintFiles(commonLintOptions)
 
-    expect(loadESLintMock).toHaveBeenCalledOnceWith({
+    expect(mockLoadESLint).toHaveBeenCalledOnceWith({
       useFlatConfig: true,
     })
   })
@@ -57,7 +57,7 @@ describe('lintFiles', () => {
       eslintUseLegacyConfig: false,
     })
 
-    expect(loadESLintMock).toHaveBeenCalledOnceWith({
+    expect(mockLoadESLint).toHaveBeenCalledOnceWith({
       useFlatConfig: true,
     })
   })
@@ -70,7 +70,7 @@ describe('lintFiles', () => {
       eslintUseLegacyConfig: true,
     })
 
-    expect(loadESLintMock).toHaveBeenCalledOnceWith({
+    expect(mockLoadESLint).toHaveBeenCalledOnceWith({
       useFlatConfig: false,
     })
   })
@@ -84,7 +84,7 @@ describe('lintFiles', () => {
     })
 
     expect(ESLint).toHaveBeenCalledOnceWith(commonESLintOptions)
-    expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
+    expect(mockESLintFiles).toHaveBeenCalledOnceWith(['index.ts'])
   })
 
   it('lints files with caching enabled when `cache` is true', async () => {
@@ -100,7 +100,7 @@ describe('lintFiles', () => {
       cache: true,
       cacheLocation: expect.stringContaining('.cache/lint/eslint'),
     })
-    expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
+    expect(mockESLintFiles).toHaveBeenCalledOnceWith(['index.ts'])
   })
 
   it('lints files with fix disabled when `fix` is false', async () => {
@@ -112,8 +112,8 @@ describe('lintFiles', () => {
     })
 
     expect(ESLint).toHaveBeenCalledOnceWith(commonESLintOptions)
-    expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
-    expect(outputFixesMock).not.toHaveBeenCalled()
+    expect(mockESLintFiles).toHaveBeenCalledOnceWith(['index.ts'])
+    expect(mockOutputFixes).not.toHaveBeenCalled()
   })
 
   it('lints files with fix enabled when `fix` is true', async () => {
@@ -128,8 +128,8 @@ describe('lintFiles', () => {
       ...commonESLintOptions,
       fix: true,
     })
-    expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
-    expect(outputFixesMock).toHaveBeenCalledOnceWith(mockedLintResults)
+    expect(mockESLintFiles).toHaveBeenCalledOnceWith(['index.ts'])
+    expect(mockOutputFixes).toHaveBeenCalledOnceWith(mockLintResults)
   })
 
   it('returns a report when ESLint successfully lints', async () => {
@@ -138,7 +138,7 @@ describe('lintFiles', () => {
     const result = await lintFiles(commonLintOptions)
 
     expect(ESLint).toHaveBeenCalledOnceWith(commonESLintOptions)
-    expect(lintFilesMock).toHaveBeenCalledOnceWith(['index.ts'])
+    expect(mockESLintFiles).toHaveBeenCalledOnceWith(['index.ts'])
     expect(result).toStrictEqual({
       results: {},
       summary: {
@@ -154,9 +154,9 @@ describe('lintFiles', () => {
   })
 
   test.each([
-    ['loadESLint', loadESLintMock],
-    ['lintFiles', lintFilesMock],
-    ['outputFixes', outputFixesMock],
+    ['loadESLint', mockLoadESLint],
+    ['lintFiles', mockESLintFiles],
+    ['outputFixes', mockOutputFixes],
   ])('exits the process when `%s` throws an error', async (_name, mock) => {
     expect.assertions(2)
 

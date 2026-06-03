@@ -8,7 +8,7 @@ import type { ESLint, Linter } from 'eslint'
 
 describe('processResults', () => {
 
-  const commonResult: ESLint.LintResult = {
+  const commonLintResult: ESLint.LintResult = {
     errorCount: 0,
     fatalErrorCount: 0,
     filePath: path.join(process.cwd(), 'file.js'),
@@ -47,7 +47,7 @@ describe('processResults', () => {
 
   it('normalises file paths relative to the cwd', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file.js'),
       messages: [commonMessage],
     }])
@@ -64,11 +64,11 @@ describe('processResults', () => {
 
   it('does not report results for files which have no messages', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file.js'),
       messages: [commonMessage],
     }, {
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file-2.js'),
       messages: [],
     }])
@@ -85,7 +85,7 @@ describe('processResults', () => {
 
   it('aggregates error and warning counts', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       errorCount: 2,
       filePath: path.join(process.cwd(), 'file.js'),
       fixableErrorCount: 1,
@@ -93,7 +93,7 @@ describe('processResults', () => {
       messages: [commonMessage],
       warningCount: 3,
     }, {
-      ...commonResult,
+      ...commonLintResult,
       errorCount: 1,
       filePath: path.join(process.cwd(), 'file-2.js'),
       fixableErrorCount: 0,
@@ -121,7 +121,7 @@ describe('processResults', () => {
 
   it('formats warning messages', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file.js'),
       messages: [{
         column: 2,
@@ -155,9 +155,81 @@ describe('processResults', () => {
     })
   })
 
+  it('formats error messages', () => {
+    const report = processResults([{
+      ...commonLintResult,
+      errorCount: 1,
+      filePath: path.join(process.cwd(), 'file.js'),
+      messages: [{
+        column: 10,
+        line: 8,
+        message: 'Test error',
+        ruleId: 'test-error',
+        severity: 2,
+      }],
+    }])
+
+    expect(report).toStrictEqual({
+      results: {
+        'file.js': [{
+          ...expectedResultThemes,
+          position: '8:10',
+          message: 'Test error',
+          rule: 'test-error',
+          severity: '  ×',
+        }],
+      },
+      summary: {
+        deprecatedRules: [],
+        errorCount: 1,
+        fileCount: 1,
+        fixableErrorCount: 0,
+        fixableWarningCount: 0,
+        linter: 'ESLint',
+        warningCount: 0,
+      },
+    })
+  })
+
+  it('formats errors with no ruleId as "core-error"', () => {
+    const report = processResults([{
+      ...commonLintResult,
+      errorCount: 1,
+      filePath: path.join(process.cwd(), 'file.js'),
+      messages: [{
+        column: 1,
+        line: 1,
+        message: 'Unknown error',
+        ruleId: null,
+        severity: 2,
+      }],
+    }])
+
+    expect(report).toStrictEqual({
+      results: {
+        'file.js': [{
+          ...expectedResultThemes,
+          position: '1:1',
+          message: 'Unknown error',
+          rule: 'core-error',
+          severity: '  ×',
+        }],
+      },
+      summary: {
+        deprecatedRules: [],
+        errorCount: 1,
+        fileCount: 1,
+        fixableErrorCount: 0,
+        fixableWarningCount: 0,
+        linter: 'ESLint',
+        warningCount: 0,
+      },
+    })
+  })
+
   it('formats multiple messages for a single file', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       errorCount: 2,
       filePath: path.join(process.cwd(), 'file.js'),
       messages: [{
@@ -228,81 +300,9 @@ describe('processResults', () => {
     })
   })
 
-  it('formats error messages', () => {
-    const report = processResults([{
-      ...commonResult,
-      errorCount: 1,
-      filePath: path.join(process.cwd(), 'file.js'),
-      messages: [{
-        column: 10,
-        line: 8,
-        message: 'Test error',
-        ruleId: 'test-error',
-        severity: 2,
-      }],
-    }])
-
-    expect(report).toStrictEqual({
-      results: {
-        'file.js': [{
-          ...expectedResultThemes,
-          position: '8:10',
-          message: 'Test error',
-          rule: 'test-error',
-          severity: '  ×',
-        }],
-      },
-      summary: {
-        deprecatedRules: [],
-        errorCount: 1,
-        fileCount: 1,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
-        linter: 'ESLint',
-        warningCount: 0,
-      },
-    })
-  })
-
-  it('formats errors with no ruleId as "core-error"', () => {
-    const report = processResults([{
-      ...commonResult,
-      errorCount: 1,
-      filePath: path.join(process.cwd(), 'file.js'),
-      messages: [{
-        column: 1,
-        line: 1,
-        message: 'Unknown error',
-        ruleId: null,
-        severity: 2,
-      }],
-    }])
-
-    expect(report).toStrictEqual({
-      results: {
-        'file.js': [{
-          ...expectedResultThemes,
-          position: '1:1',
-          message: 'Unknown error',
-          rule: 'core-error',
-          severity: '  ×',
-        }],
-      },
-      summary: {
-        deprecatedRules: [],
-        errorCount: 1,
-        fileCount: 1,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
-        linter: 'ESLint',
-        warningCount: 0,
-      },
-    })
-  })
-
   it('accumulates deprecated rules without duplicates', () => {
     const report = processResults([{
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file.js'),
       messages: [commonMessage],
       usedDeprecatedRules: [{
@@ -313,7 +313,7 @@ describe('processResults', () => {
         ruleId: 'deprecated-rule-2',
       }],
     }, {
-      ...commonResult,
+      ...commonLintResult,
       filePath: path.join(process.cwd(), 'file-2.js'),
       messages: [commonMessage],
       usedDeprecatedRules: [{
