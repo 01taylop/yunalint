@@ -2,7 +2,7 @@ import { clearTerminal } from '../terminal'
 
 describe('clearTerminal', () => {
 
-  it('calls process.stdout.write to clear the terminal', () => {
+  it('calls `process.stdout.write` to clear the terminal', () => {
     const stdoutSpy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
 
     clearTerminal()

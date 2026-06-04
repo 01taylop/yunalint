@@ -33,7 +33,7 @@ describe('executeAllLinters', () => {
     jest.spyOn(process, 'exit').mockImplementation()
   })
 
-  it('calls executeLinter for all three linters in parallel', async () => {
+  it('calls `executeLinter` for all three linters in parallel', async () => {
     expect.assertions(4)
 
     const expectedCommonArgs = {
@@ -81,7 +81,7 @@ describe('executeAllLinters', () => {
     expect(notifyResults).toHaveBeenCalledWith(mockReports, commonOptions.title)
   })
 
-  it('exits with code from notifyResults when not watching', async () => {
+  it('exits with code from `notifyResults` when not watching', async () => {
     expect.assertions(2)
 
     await executeAllLinters(commonOptions)
@@ -90,7 +90,7 @@ describe('executeAllLinters', () => {
     expect(process.exit).toHaveBeenCalledWith(0)
   })
 
-  it('logs "Watching for changes..." when watch is true', async () => {
+  it('logs "Watching for changes..." when `watch` is true', async () => {
     expect.assertions(2)
 
     await executeAllLinters({ ...commonOptions, watch: true })

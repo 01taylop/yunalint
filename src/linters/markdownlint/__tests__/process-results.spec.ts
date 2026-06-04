@@ -201,7 +201,7 @@ describe('processResults', () => {
     })
   })
 
-  it('sorts results by lineNumber and then by rule name', () => {
+  it('sorts results by line number and then by rule name', () => {
     const lintResults: LintResults = {
       'file.md': [{
         ...markdownlintError,
@@ -264,7 +264,7 @@ describe('processResults', () => {
     })
   })
 
-  it('sorts results by lineNumber and then by rule name when rules only have one name', () => {
+  it('sorts results by line number and then by rule name when rules only have one name', () => {
     const lintResults: LintResults = {
       'file.md': [{
         ...markdownlintError,

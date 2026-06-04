@@ -1,5 +1,3 @@
-import path from 'node:path'
-
 import stylelint from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
@@ -9,42 +7,57 @@ import { loadConfig } from '../load-config'
 
 describe('loadConfig', () => {
 
-  test.each([
-    ['a file is provided', 'index.css', path.join(process.cwd(), 'index.css')],
-    ['no file is provided', undefined, path.join(process.cwd(), 'style.css')],
-  ])('calls `stylelint.resolveConfig` with the correct search path when %s', async (_title, filePath, expectedPath) => {
-    expect.assertions(1)
-
-    await loadConfig(filePath)
-
-    expect(stylelint.resolveConfig).toHaveBeenCalledOnceWith(expectedPath)
-  })
-
-  it('returns undefined if custom config exists', async () => {
-    expect.assertions(2)
+  it('returns `undefined` if custom config exists', async () => {
+    expect.assertions(3)
 
     const customConfig = { rules: { 'no-empty-source': true } }
 
     jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(customConfig)
 
-    const config = await loadConfig('index.css')
+    const config = await loadConfig('style.css')
 
+    expect(stylelint.resolveConfig).toHaveBeenCalledOnceWith('style.css')
     expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using custom Stylelint config:', customConfig)
     expect(config).toStrictEqual(undefined)
   })
 
-  it('returns the default config if no custom config exists', async () => {
-    expect.assertions(2)
-
-    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(undefined)
+  it('returns the default config when no file is provided', async () => {
+    expect.assertions(3)
 
     const config = await loadConfig()
 
+    expect(stylelint.resolveConfig).not.toHaveBeenCalled()
     expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using default Stylelint config:', expect.objectContaining(defaultConfig))
     expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
   })
 
-  it('exits the process when `stylelint.resolveConfig` throws an error', async () => {
+  it('returns the default config when `stylelint.resolveConfig` returns `undefined`', async () => {
+    expect.assertions(3)
+
+    jest.mocked(stylelint.resolveConfig).mockResolvedValueOnce(undefined)
+
+    const config = await loadConfig('style.css')
+
+    expect(stylelint.resolveConfig).toHaveBeenCalledOnceWith('style.css')
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using default Stylelint config:', expect.objectContaining(defaultConfig))
+    expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
+  })
+
+  it('returns the default config when `stylelint.resolveConfig` throws with a `ConfigurationError`', async () => {
+    expect.assertions(3)
+
+    const configError = Object.assign(new Error('No configuration provided'), { name: 'ConfigurationError' })
+
+    jest.mocked(stylelint.resolveConfig).mockRejectedValueOnce(configError)
+
+    const config = await loadConfig('style.css')
+
+    expect(stylelint.resolveConfig).toHaveBeenCalledOnceWith('style.css')
+    expect(colourLog.configDebug).toHaveBeenCalledOnceWith('Using default Stylelint config:', expect.objectContaining(defaultConfig))
+    expect(config).toStrictEqual(expect.objectContaining(defaultConfig))
+  })
+
+  it('exits the process when `stylelint.resolveConfig` throws an unexpected error', async () => {
     expect.assertions(2)
 
     const error = new Error('Test error')
@@ -54,7 +67,7 @@ describe('loadConfig', () => {
     })
 
     try {
-      await loadConfig()
+      await loadConfig('style.css')
     } catch {
       expect(colourLog.error).toHaveBeenCalledWith('An error occurred while loading the Stylelint config', error)
       expect(process.exit).toHaveBeenCalledWith(1)

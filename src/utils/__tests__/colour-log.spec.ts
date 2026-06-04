@@ -40,7 +40,7 @@ describe('colourLog', () => {
 
   describe('configDebug', () => {
 
-    it('does not log if global.debug is false', () => {
+    it('does not log if `global.debug` is false', () => {
       global.debug = false
 
       colourLog.configDebug('Debug message', 'config')
@@ -49,7 +49,7 @@ describe('colourLog', () => {
       expect(mockConsoleLog).not.toHaveBeenCalled()
     })
 
-    it('logs the message in blue and the config in default if global.debug is true', () => {
+    it('logs the message in blue and the config in default if `global.debug` is true', () => {
       global.debug = true
 
       colourLog.configDebug('Debug message', 'config')
@@ -74,14 +74,14 @@ describe('colourLog', () => {
       expect(mockConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred.')
     })
 
-    it('logs the text with debug instructions if there is an error and global.debug is false', () => {
+    it('logs the text with debug instructions if there is an error and `global.debug` is false', () => {
       colourLog.error('An error occurred', error)
 
       expect(chalk.red).toHaveBeenCalledOnceWith('\n× An error occurred. Run with --debug for more information.')
       expect(mockConsoleError).toHaveBeenCalledOnceWith('\n× An error occurred. Run with --debug for more information.')
     })
 
-    it('logs the error if global.debug is true', () => {
+    it('logs the error if `global.debug` is true', () => {
       global.debug = true
 
       colourLog.error('An error occurred', error)

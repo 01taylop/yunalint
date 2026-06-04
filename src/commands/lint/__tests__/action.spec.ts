@@ -33,7 +33,7 @@ describe('lint action', () => {
 
   describe('debug mode', () => {
 
-    it('sets global.debug to true when debug option is true', async () => {
+    it('sets `global.debug` to true when `debug` is true', async () => {
       expect.assertions(1)
 
       await lintAction(supervisor, { ...defaultLintCommandOptions, debug: true })
@@ -41,7 +41,7 @@ describe('lint action', () => {
       expect(global.debug).toBe(true)
     })
 
-    it('sets global.debug to false when debug option is false', async () => {
+    it('sets `global.debug` to false when `debug` is false', async () => {
       expect.assertions(1)
 
       await lintAction(supervisor, { ...defaultLintCommandOptions, debug: false })
@@ -89,7 +89,7 @@ describe('lint action', () => {
       expect(clearCacheDirectory).not.toHaveBeenCalled()
     })
 
-    it('clears cache when clearCache option is true', async () => {
+    it('clears cache when `clearCache` is true', async () => {
       expect.assertions(1)
 
       await lintAction(supervisor, { ...defaultLintCommandOptions, clearCache: true })
@@ -169,7 +169,7 @@ describe('lint action', () => {
       expect(watchFiles).not.toHaveBeenCalled()
     })
 
-    it('starts watcher when watch option is true', async () => {
+    it('starts watcher when `watch` is true', async () => {
       expect.assertions(1)
 
       await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
