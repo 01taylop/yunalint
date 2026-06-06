@@ -1,8 +1,8 @@
 import { Linter } from '@Types/lint'
 
-import { eslint } from './eslint'
-import { markdownlint } from './markdownlint'
-import { stylelint } from './stylelint'
+import * as eslint from './eslint'
+import * as markdownlint from './markdownlint'
+import * as stylelint from './stylelint'
 
 import type { LinterInterface } from '@Types/lint'
 

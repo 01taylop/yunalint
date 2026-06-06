@@ -4,8 +4,8 @@ import { fixableMarkdownlintError, markdownlintError } from '@Jest/fixtures'
 import { colourLog } from '@Utils/colour-log'
 
 import { fixFile } from '../fix-file'
-import { lintFiles } from '../lint-files'
 import { loadConfig } from '../load-config'
+import { lintFiles } from '..'
 
 jest.mock('../fix-file')
 jest.mock('../load-config')
