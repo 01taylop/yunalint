@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
 import { lintAction } from '../action'
-import { lintCommand } from '../command'
+import { lintCommand } from '..'
 
 jest.mock('../action')
 
