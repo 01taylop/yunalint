@@ -8070,12 +8070,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"space-log@npm:2.0.0":
-  version: 2.0.0
-  resolution: "space-log@npm:2.0.0"
+"space-log@npm:2.1.0":
+  version: 2.1.0
+  resolution: "space-log@npm:2.1.0"
   dependencies:
     chalk: "npm:^4.1.2"
-  checksum: 10c0/d34eea33a50b98b9168740b804affe7ce692c7f366532b170237e49666a6c1cf5b5c14595315b7ed17ed6d1288214b3aa91e709786b0b490c42c741676260bbe
+  checksum: 10c0/95950135c7730e516fea7485150d2252052a964e14eba7b5b87b019f6e8f479505214832c6e5c606a71271e00fd0c1b835b41ae61786b7c611679c1fb6cf1de5
   languageName: node
   linkType: hard
 
@@ -9113,7 +9113,7 @@ __metadata:
     rimraf: "npm:6.1.3"
     rollup: "npm:4.60.4"
     rollup-plugin-copy: "npm:3.5.0"
-    space-log: "npm:2.0.0"
+    space-log: "npm:2.1.0"
     stylelint: "npm:17.12.0"
     stylelint-config-property-sort-order-smacss: "npm:10.0.0"
     stylelint-declaration-strict-value: "npm:1.11.1"
