@@ -59,5 +59,5 @@ export default defineConfig([{
 },
   createConfig('config/all-legacy.ts', 'cjs'),
   createConfig('config/all.ts', 'esm'),
-  createConfig('config/stylelint.config.js', 'cjs'),
+  createConfig('config/stylelint.config.ts', 'cjs'),
 ])

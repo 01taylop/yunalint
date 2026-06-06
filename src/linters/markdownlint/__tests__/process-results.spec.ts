@@ -7,7 +7,7 @@ import type { FormattedResult } from '@Types/lint'
 
 describe('processResults', () => {
 
-  const commonResult: FormattedResult = {
+  const commonFormattedResult: FormattedResult = {
     ...expectedResultThemes,
     position: '1:1',
     message: 'test-rule-description: test-error-detail',
@@ -48,10 +48,10 @@ describe('processResults', () => {
     })
   })
 
-  it('aggregates error counts', () => {
+  it('aggregates error and warning counts', () => {
     const report = processResults({
-      'file.md': [markdownlintError, fixableMarkdownlintError],
-      'file-2.md': [markdownlintError],
+      'file.md': [markdownlintError, fixableMarkdownlintError, { ...fixableMarkdownlintError, severity: 'warning' }],
+      'file-2.md': [markdownlintError, { ...markdownlintError, severity: 'warning' }],
       'file-3.md': [],
     })
 
@@ -65,9 +65,36 @@ describe('processResults', () => {
         errorCount: 3,
         fileCount: 3,
         fixableErrorCount: 1,
+        fixableWarningCount: 1,
+        linter: 'Markdownlint',
+        warningCount: 2,
+      },
+    })
+  })
+
+  it('formats warning messages', () => {
+    const report = processResults({
+      'file.md': [{
+        ...markdownlintError,
+        severity: 'warning',
+      }],
+    })
+
+    expect(report).toStrictEqual({
+      results: {
+        'file.md': [{
+          ...commonFormattedResult,
+          severity: '  ⚠',
+        }],
+      },
+      summary: {
+        deprecatedRules: [],
+        errorCount: 0,
+        fileCount: 1,
+        fixableErrorCount: 0,
         fixableWarningCount: 0,
         linter: 'Markdownlint',
-        warningCount: 0,
+        warningCount: 1,
       },
     })
   })
@@ -79,7 +106,7 @@ describe('processResults', () => {
 
     expect(report).toStrictEqual({
       results: {
-        'file.md': [commonResult],
+        'file.md': [commonFormattedResult],
       },
       summary: {
         deprecatedRules: [],
@@ -104,7 +131,7 @@ describe('processResults', () => {
     expect(report).toStrictEqual({
       results: {
         'file.md': [{
-          ...commonResult,
+          ...commonFormattedResult,
           position: '1',
         }],
       },
@@ -131,7 +158,7 @@ describe('processResults', () => {
     expect(report).toStrictEqual({
       results: {
         'file.md': [{
-          ...commonResult,
+          ...commonFormattedResult,
           message: 'test-rule-description',
         }],
       },
@@ -158,7 +185,7 @@ describe('processResults', () => {
     expect(report).toStrictEqual({
       results: {
         'file.md': [{
-          ...commonResult,
+          ...commonFormattedResult,
           rule: 'MD000',
         }],
       },
@@ -174,7 +201,7 @@ describe('processResults', () => {
     })
   })
 
-  it('sorts results by lineNumber and then by rule name', () => {
+  it('sorts results by line number and then by rule name', () => {
     const lintResults: LintResults = {
       'file.md': [{
         ...markdownlintError,
@@ -204,23 +231,23 @@ describe('processResults', () => {
     expect(report).toStrictEqual({
       results: {
         'file.md': [{
-          ...commonResult,
+          ...commonFormattedResult,
           position: '1:1',
           rule: 'test-rule-a',
         }, {
-          ...commonResult,
+          ...commonFormattedResult,
           position: '3:1',
           rule: 'test-rule-b',
         }, {
-          ...commonResult,
+          ...commonFormattedResult,
           position: '3:1',
           rule: 'test-rule-c',
         }, {
-          ...commonResult,
+          ...commonFormattedResult,
           position: '3:1',
           rule: 'test-rule-d',
         }, {
-          ...commonResult,
+          ...commonFormattedResult,
           position: '5:1',
           rule: 'test-rule-e',
         }],
@@ -237,7 +264,7 @@ describe('processResults', () => {
     })
   })
 
-  it('sorts results by lineNumber and then by rule name when rules only have one name', () => {
+  it('sorts results by line number and then by rule name when rules only have one name', () => {
     const lintResults: LintResults = {
       'file.md': [{
         ...markdownlintError,
@@ -255,10 +282,10 @@ describe('processResults', () => {
     expect(report).toStrictEqual({
       results: {
         'file.md': [{
-          ...commonResult,
+          ...commonFormattedResult,
           rule: 'MD001',
         }, {
-          ...commonResult,
+          ...commonFormattedResult,
           rule: 'MD002',
         }],
       },

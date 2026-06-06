@@ -27,6 +27,15 @@ const config: Config = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.(j|t)s$': ['ts-jest', {
+      astTransformers: {
+        before: [{
+          path: 'ts-jest-mock-import-meta',
+          options: { metaObjectReplacement: { url: `file://${process.cwd()}/config/stylelint.config.ts` } }
+        }],
+      },
+      diagnostics: {
+        ignoreCodes: [1343]
+      },
       tsconfig: {
         rootDir: '.',
       },

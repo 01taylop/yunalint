@@ -3,6 +3,8 @@ import postcssScss from 'postcss-scss'
 
 import Rules from './stylelint/rules'
 
+import type { Config } from 'stylelint'
+
 export default {
   extends: [
     'stylelint-config-property-sort-order-smacss',
@@ -18,8 +20,8 @@ export default {
       'import-notation': 'string',
       'media-query-no-invalid': null,
       'no-invalid-position-at-import-rule': [true, {
-				ignoreAtRules: ['use', 'forward'],
-			}],
+        ignoreAtRules: ['use', 'forward'],
+      }],
       'property-no-unknown': null, // scss/property-no-unknown
       ...Rules.Scss,
     },
@@ -34,8 +36,8 @@ export default {
       'import-notation': 'string',
       'media-query-no-invalid': null,
       'no-invalid-position-at-import-rule': [true, {
-				ignoreAtRules: ['use', 'forward'],
-			}],
+        ignoreAtRules: ['use', 'forward'],
+      }],
     },
   }],
   plugins: [
@@ -49,4 +51,4 @@ export default {
     ...Rules.Stylelint,
     ...Rules.Stylistic,
   },
-}
+} satisfies Config

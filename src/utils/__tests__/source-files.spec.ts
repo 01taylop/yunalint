@@ -34,7 +34,7 @@ describe('sourceFiles', () => {
     [Linter.ESLint, ['**/*.ts']],
     [Linter.Markdownlint, ['**/*.md']],
     [Linter.Stylelint, ['**/*.css']],
-  ])('calls glob with the correct patterns and options', async (linter, expectedFilePattern) => {
+  ])('calls glob with the patterns and options for %s', async (linter, expectedFilePattern) => {
     expect.assertions(1)
 
     jest.mocked(glob).mockResolvedValue([])

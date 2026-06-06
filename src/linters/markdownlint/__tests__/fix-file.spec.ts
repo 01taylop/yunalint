@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
 
 import { applyFixes } from 'markdownlint'
 
@@ -28,9 +29,9 @@ describe('fixFile', () => {
 
     fixFile({ errors, file: filePath })
 
-    expect(readFileSync).toHaveBeenCalledWith(`${process.cwd()}/${filePath}`, 'utf8')
+    expect(readFileSync).toHaveBeenCalledWith(path.join(process.cwd(), filePath), 'utf8')
     expect(applyFixes).toHaveBeenCalledWith(originalFileContent, errors)
-    expect(writeFileSync).toHaveBeenCalledWith(`${process.cwd()}/${filePath}`, fixedFileContent)
+    expect(writeFileSync).toHaveBeenCalledWith(path.join(process.cwd(), filePath), fixedFileContent)
   })
 
 })

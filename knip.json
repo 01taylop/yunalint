@@ -7,12 +7,16 @@
     "stylelint-declaration-strict-value",
     "stylelint-order",
     "stylelint-scss",
+    "ts-jest-mock-import-meta",
     "ts-node"
+  ],
+  "ignoreUnresolved": [
+    "./stylelint.config"
   ],
   "entry": [
     "config/all-legacy.ts",
     "config/all.ts",
-    "config/stylelint.config.js",
+    "config/stylelint.config.ts",
     "src/index.ts"
   ]
 }

@@ -22,13 +22,13 @@ const lintFiles = async ({ cache, eslintUseLegacyConfig, files, fix }: LintFiles
       fix,
     }).lintFiles(files)
 
-    // Process results
-    const report = processResults(results)
-
     // Fix files if requested
     if (fix) {
       await ESLint.outputFixes(results)
     }
+
+    // Process results
+    const report = processResults(results)
 
     // Return report
     return report

@@ -5,18 +5,17 @@ import stylelint from 'stylelint'
 import { colourLog } from '@Utils/colour-log'
 
 import { lintFiles } from '../lint-files'
+import { resolveConfigFile } from '../resolve-config'
 
 import type { LintResult } from 'stylelint'
 
-jest.mock('stylelint', () => ({
-  lint: jest.fn(),
-}))
+jest.mock('../resolve-config')
 
 describe('lintFiles', () => {
 
   const commonLintOptions = {
     cache: false,
-    files: ['index.scss'],
+    files: ['index.css'],
     fix: false,
   }
 
@@ -24,8 +23,7 @@ describe('lintFiles', () => {
     allowEmptyInput: true,
     cache: false,
     cacheLocation: undefined,
-    config: expect.any(Object),
-    files: ['index.scss'],
+    files: ['index.css'],
     fix: false,
     quietDeprecationWarnings: true,
     reportDescriptionlessDisables: true,
@@ -33,27 +31,50 @@ describe('lintFiles', () => {
     reportNeedlessDisables: true,
   }
 
-  const mockedLintResults: Array<LintResult> = [{
+  const mockLintResults: Array<LintResult> = [{
     deprecations: [],
     errored: false,
     ignored: false,
     invalidOptionWarnings: [],
     parseErrors: [],
-    source: path.join(process.cwd(), 'index.scss'),
+    source: path.join(process.cwd(), 'index.css'),
     warnings: [],
   }]
 
-  const stylelintLintMock = jest.mocked(stylelint.lint).mockImplementation(async () => ({
+  const mockLint = jest.mocked(stylelint.lint).mockImplementation(async () => ({
     cwd: '',
     errored: false,
-    output: '',
     report: '',
     reportedDisables: [],
-    results: mockedLintResults,
+    results: mockLintResults,
     ruleMetadata: {},
   }))
+  const mockResolveConfigFile = jest.mocked(resolveConfigFile).mockResolvedValue(undefined)
 
-  it('lints files with cacheing disabled when `cache` is false', async () => {
+  it('lints with no configFile when `resolveConfigFile` returns undefined', async () => {
+    expect.assertions(2)
+
+    await lintFiles(commonLintOptions)
+
+    expect(mockResolveConfigFile).toHaveBeenCalledOnceWith('index.css')
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
+  })
+
+  it('lints with the configFile returned by `resolveConfigFile`', async () => {
+    expect.assertions(2)
+
+    mockResolveConfigFile.mockResolvedValueOnce('./stylelint.config')
+
+    await lintFiles(commonLintOptions)
+
+    expect(mockResolveConfigFile).toHaveBeenCalledOnceWith('index.css')
+    expect(mockLint).toHaveBeenCalledOnceWith({
+      ...commonStylelintOptions,
+      configFile: './stylelint.config',
+    })
+  })
+
+  it('lints files with caching disabled when `cache` is false', async () => {
     expect.assertions(1)
 
     await lintFiles({
@@ -61,10 +82,10 @@ describe('lintFiles', () => {
       cache: false,
     })
 
-    expect(stylelintLintMock).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
-  it('lints files with cacheing enabled when `cache` is true', async () => {
+  it('lints files with caching enabled when `cache` is true', async () => {
     expect.assertions(1)
 
     await lintFiles({
@@ -72,7 +93,7 @@ describe('lintFiles', () => {
       cache: true,
     })
 
-    expect(stylelintLintMock).toHaveBeenCalledOnceWith({
+    expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       cache: true,
       cacheLocation: expect.stringContaining('.cache/lint/stylelint'),
@@ -87,7 +108,7 @@ describe('lintFiles', () => {
       fix: false
     })
 
-    expect(stylelintLintMock).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
   it('lints files with fix enabled when `fix` is true', async () => {
@@ -98,7 +119,7 @@ describe('lintFiles', () => {
       fix: true
     })
 
-    expect(stylelintLintMock).toHaveBeenCalledOnceWith({
+    expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
       fix: true,
     })
@@ -109,7 +130,7 @@ describe('lintFiles', () => {
 
     const result = await lintFiles(commonLintOptions)
 
-    expect(stylelintLintMock).toHaveBeenCalledOnceWith(commonStylelintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
     expect(result).toStrictEqual({
       results: {},
       summary: {
@@ -124,12 +145,15 @@ describe('lintFiles', () => {
     })
   })
 
-  it('exits the process when `stylelint.lint` throws an error', async () => {
+  test.each([
+    ['resolveConfigFile', mockResolveConfigFile],
+    ['lint', mockLint],
+  ])('exits the process when `%s` throws an error', async (_name, mock) => {
     expect.assertions(2)
 
     const error = new Error('Test error')
 
-    stylelintLintMock.mockRejectedValueOnce(error)
+    mock.mockRejectedValueOnce(error)
 
     try {
       await lintFiles(commonLintOptions)

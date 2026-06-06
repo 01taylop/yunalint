@@ -28,7 +28,7 @@ describe('lintFiles', () => {
   const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue({ default: true })
 
   it('lints files once when `fix` is false', async () => {
-    expect.assertions(3)
+    expect.assertions(2)
 
     await lintFiles({
       ...commonLintOptions,
@@ -36,8 +36,7 @@ describe('lintFiles', () => {
     })
 
     expect(mockLoadConfig).toHaveBeenCalledTimes(1)
-    expect(mockLint).toHaveBeenCalledTimes(1)
-    expect(mockLint).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonMarkdownlintOptions)
   })
 
   test.each([
@@ -45,7 +44,7 @@ describe('lintFiles', () => {
     ['no errors are found', { 'README.md': [] }],
     ['no errors are fixable', { 'README.md': [markdownlintError] }],
   ])('lints files once when `fix` is true but %s', async (_title, mockReturnValue) => {
-    expect.assertions(3)
+    expect.assertions(2)
 
     mockLint.mockResolvedValueOnce(mockReturnValue)
 
@@ -55,8 +54,7 @@ describe('lintFiles', () => {
     })
 
     expect(mockLoadConfig).toHaveBeenCalledTimes(1)
-    expect(mockLint).toHaveBeenCalledTimes(1)
-    expect(mockLint).toHaveBeenNthCalledWith(1, commonMarkdownlintOptions)
+    expect(mockLint).toHaveBeenCalledOnceWith(commonMarkdownlintOptions)
   })
 
   it('lints files twice when `fix` is true and errors are fixable', async () => {
