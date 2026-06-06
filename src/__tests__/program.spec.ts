@@ -96,7 +96,7 @@ describe('createProgram', () => {
     const writeErrMock = jest.fn()
 
     const program = createProgram({ supervisor })
-      .configureOutput({ writeErr: writeErrMock })
+    program.commands.forEach(cmd => cmd.configureOutput({ writeErr: writeErrMock }))
 
     try {
       program.parse(['node', './index.ts', '--unknown'])
