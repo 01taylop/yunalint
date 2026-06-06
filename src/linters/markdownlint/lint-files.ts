@@ -17,7 +17,6 @@ const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> 
       files,
     }
 
-    // Run Markdownlint
     let results = await lint(markdownlintOptions)
 
     // Fix errors, then re-run to ensure the report reflects the fixed state
@@ -36,10 +35,7 @@ const lintFiles = async ({ files, fix }: LintFilesOptions): Promise<LintReport> 
       }
     }
 
-    // Process results
     const report = processResults(results)
-
-    // Return report
     return report
   } catch (error) {
     colourLog.error(`An error occurred while running ${Linter.Markdownlint}`, error)

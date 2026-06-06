@@ -13,7 +13,6 @@ const lintFiles = async ({ cache, files, fix }: LintFilesOptions): Promise<LintR
   try {
     const configFile = await resolveConfigFile(files[0])
 
-    // Run Stylelint
     const { results, ruleMetadata } = await stylelint.lint({
       ...(configFile && { configFile }),
       allowEmptyInput: true,
@@ -27,10 +26,7 @@ const lintFiles = async ({ cache, files, fix }: LintFilesOptions): Promise<LintR
       reportNeedlessDisables: true,
     })
 
-    // Process results
     const report = processResults(results, ruleMetadata)
-
-    // Return report
     return report
   } catch (error) {
     colourLog.error(`An error occurred while running ${Linter.Stylelint}`, error)

@@ -34,7 +34,7 @@ describe('watchFiles', () => {
 
   const triggerFileEvent = (event: 'add' | 'change' | 'unlink', path: string, content: string, debounceTime: number, error?: Error) => {
     if (event === 'change') {
-      jest.mocked(readFile).mockImplementation((_path: any, _encoding: any, callback?: (error: Error | null, data: string) => void): void => {
+      jest.mocked(readFile).mockImplementation((_path: unknown, _options: unknown, callback?: (error: Error | null, data: string) => void): void => {
         if (callback) {
           callback(error || null, content)
         }

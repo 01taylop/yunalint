@@ -5,12 +5,12 @@ import { applyFixes } from 'markdownlint'
 
 import type { LintError } from 'markdownlint'
 
-interface FixFile {
+interface FixFileOptions {
   errors: Array<LintError>
   file: string
 }
 
-const fixFile = ({ errors, file }: FixFile): void => {
+const fixFile = ({ errors, file }: FixFileOptions): void => {
   const filePath = path.join(process.cwd(), file)
   const fileContent = readFileSync(filePath, 'utf8')
   const fixedContent = applyFixes(fileContent, errors)

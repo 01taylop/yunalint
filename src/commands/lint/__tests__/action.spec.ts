@@ -10,6 +10,8 @@ import { EVENTS, fileWatcherEvents, watchFiles } from '@Utils/watch-files'
 import { lintAction } from '../action'
 import { executeAllLinters } from '../execute-all'
 
+import type { FSWatcher } from 'chokidar'
+
 jest.mock('@Utils/cache')
 jest.mock('@Utils/file-patterns')
 jest.mock('@Utils/terminal')
@@ -232,8 +234,8 @@ describe('lint action', () => {
     it('registers stop callback that closes the watcher', async () => {
       expect.assertions(1)
 
-      const mockWatcher = { close: jest.fn().mockResolvedValue(undefined) }
-      jest.mocked(watchFiles).mockReturnValue(mockWatcher as any)
+      const mockWatcher: Pick<FSWatcher, 'close'> = { close: jest.fn().mockResolvedValue(undefined) }
+      jest.mocked(watchFiles).mockReturnValue(mockWatcher as FSWatcher)
 
       await lintAction(supervisor, { ...defaultLintCommandOptions, watch: true })
       await supervisor.stop('file-watcher')
