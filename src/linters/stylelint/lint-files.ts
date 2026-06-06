@@ -4,18 +4,18 @@ import { Linter } from '@Types/lint'
 import { colourLog } from '@Utils/colour-log'
 import { getCacheDirectory } from '@Utils/cache'
 
-import { loadConfig } from './load-config'
 import { processResults } from './process-results'
+import { resolveConfigFile } from './resolve-config'
 
 import type { LintFilesOptions, LintReport } from '@Types/lint'
 
 const lintFiles = async ({ cache, files, fix }: LintFilesOptions): Promise<LintReport> => {
   try {
-    const config = await loadConfig(files[0])
+    const configFile = await resolveConfigFile(files[0])
 
     // Run Stylelint
     const { results, ruleMetadata } = await stylelint.lint({
-      ...(config && { config }),
+      ...(configFile && { configFile }),
       allowEmptyInput: true,
       cache,
       cacheLocation: cache ? getCacheDirectory(Linter.Stylelint) : undefined,

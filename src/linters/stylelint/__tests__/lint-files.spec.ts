@@ -5,11 +5,11 @@ import stylelint from 'stylelint'
 import { colourLog } from '@Utils/colour-log'
 
 import { lintFiles } from '../lint-files'
-import { loadConfig } from '../load-config'
+import { resolveConfigFile } from '../resolve-config'
 
 import type { LintResult } from 'stylelint'
 
-jest.mock('../load-config')
+jest.mock('../resolve-config')
 
 describe('lintFiles', () => {
 
@@ -49,30 +49,28 @@ describe('lintFiles', () => {
     results: mockLintResults,
     ruleMetadata: {},
   }))
-  const mockLoadConfig = jest.mocked(loadConfig).mockResolvedValue(undefined)
+  const mockResolveConfigFile = jest.mocked(resolveConfigFile).mockResolvedValue(undefined)
 
-  it('lints with no config when `loadConfig` returns undefined', async () => {
+  it('lints with no configFile when `resolveConfigFile` returns undefined', async () => {
     expect.assertions(2)
 
     await lintFiles(commonLintOptions)
 
-    expect(mockLoadConfig).toHaveBeenCalledOnceWith('index.css')
+    expect(mockResolveConfigFile).toHaveBeenCalledOnceWith('index.css')
     expect(mockLint).toHaveBeenCalledOnceWith(commonStylelintOptions)
   })
 
-  it('lints with config returned by `loadConfig`', async () => {
+  it('lints with the configFile returned by `resolveConfigFile`', async () => {
     expect.assertions(2)
 
-    const config = { rules: { 'no-empty-source': true } }
-
-    mockLoadConfig.mockResolvedValueOnce(config)
+    mockResolveConfigFile.mockResolvedValueOnce('./lib/stylelint.config.js')
 
     await lintFiles(commonLintOptions)
 
-    expect(mockLoadConfig).toHaveBeenCalledOnceWith('index.css')
+    expect(mockResolveConfigFile).toHaveBeenCalledOnceWith('index.css')
     expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
-      config,
+      configFile: './lib/stylelint.config.js',
     })
   })
 
@@ -148,7 +146,7 @@ describe('lintFiles', () => {
   })
 
   test.each([
-    ['loadConfig', mockLoadConfig],
+    ['resolveConfigFile', mockResolveConfigFile],
     ['lint', mockLint],
   ])('exits the process when `%s` throws an error', async (_name, mock) => {
     expect.assertions(2)

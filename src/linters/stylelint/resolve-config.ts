@@ -1,17 +1,15 @@
+import { createRequire } from 'node:module'
+
 import stylelint from 'stylelint'
 
 import { Linter } from '@Types/lint'
 import { colourLog } from '@Utils/colour-log'
 
-import defaultConfig from '../../../config/stylelint.config'
-
-import type { Config } from 'stylelint'
-
-const loadConfig = async (filePath?: string): Promise<Config | undefined> => {
+const resolveConfigFile = async (cssFilePath?: string): Promise<string | undefined> => {
   try {
     // Custom config
-    if (filePath) {
-      const customConfig = await stylelint.resolveConfig(filePath)
+    if (cssFilePath) {
+      const customConfig = await stylelint.resolveConfig(cssFilePath)
       if (customConfig) {
         colourLog.configDebug(`Using custom ${Linter.Stylelint} config:`, customConfig)
         return undefined // Stylelint will auto-discover it
@@ -25,10 +23,12 @@ const loadConfig = async (filePath?: string): Promise<Config | undefined> => {
   }
 
   // Default config
-  colourLog.configDebug(`Using default ${Linter.Stylelint} config:`, defaultConfig)
-  return defaultConfig
+  const require = createRequire(import.meta.url)
+  const defaultConfigPath = require.resolve('./stylelint.config')
+  colourLog.configDebug(`Using default ${Linter.Stylelint} config:`, defaultConfigPath)
+  return defaultConfigPath
 }
 
 export {
-  loadConfig,
+  resolveConfigFile,
 }

@@ -5,7 +5,7 @@ import Rules from './stylelint/rules'
 
 import type { Config } from 'stylelint'
 
-const config: Config = {
+export default {
   extends: [
     'stylelint-config-property-sort-order-smacss',
   ],
@@ -51,6 +51,4 @@ const config: Config = {
     ...Rules.Stylelint,
     ...Rules.Stylistic,
   },
-}
-
-export default config
+} satisfies Config
