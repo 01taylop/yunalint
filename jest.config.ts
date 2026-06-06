@@ -30,7 +30,7 @@ const config: Config = {
       astTransformers: {
         before: [{
           path: 'ts-jest-mock-import-meta',
-          options: { metaObjectReplacement: { url: `file://${process.cwd()}/config/stylint.config.js` } }
+          options: { metaObjectReplacement: { url: `file://${process.cwd()}/config/stylelint.config.ts` } }
         }],
       },
       diagnostics: {

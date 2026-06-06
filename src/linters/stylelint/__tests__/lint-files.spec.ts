@@ -63,14 +63,14 @@ describe('lintFiles', () => {
   it('lints with the configFile returned by `resolveConfigFile`', async () => {
     expect.assertions(2)
 
-    mockResolveConfigFile.mockResolvedValueOnce('./lib/stylelint.config.js')
+    mockResolveConfigFile.mockResolvedValueOnce('./stylelint.config')
 
     await lintFiles(commonLintOptions)
 
     expect(mockResolveConfigFile).toHaveBeenCalledOnceWith('index.css')
     expect(mockLint).toHaveBeenCalledOnceWith({
       ...commonStylelintOptions,
-      configFile: './lib/stylelint.config.js',
+      configFile: './stylelint.config',
     })
   })
 
