@@ -10,12 +10,11 @@ import type { FSWatcher } from 'chokidar'
 import type { FilePatterns } from '@Types/lint'
 
 jest.mock('node:fs')
-jest.mock('chokidar')
 
 type Event = Record<string, unknown>
 
 describe('watchFiles', () => {
-  let mockWatcher: FSWatcher
+  let mockWatcher: Pick<FSWatcher, 'add' | 'close' | 'on' | 'unwatch'>
 
   const getIncludePatterns = (esPattern: string = '**/*.ts'): FilePatterns['includePatterns'] => ({
     [Linter.ESLint]: [esPattern],
@@ -42,7 +41,7 @@ describe('watchFiles', () => {
       })
     }
 
-    const eventHandler = jest.mocked(mockWatcher.on).mock.calls.find(([name, _handler]) => name === event)?.[1]
+    const eventHandler = jest.mocked(mockWatcher.on).mock.calls.find(([name, _handler]) => name === event)?.[1] as ((filePath: string) => void) | undefined
     if (eventHandler) {
       eventHandler(path)
     }
@@ -56,9 +55,9 @@ describe('watchFiles', () => {
       close: jest.fn(),
       on: jest.fn(),
       unwatch: jest.fn(),
-    } as Partial<FSWatcher> as FSWatcher
+    }
 
-    jest.mocked(chokidar.watch).mockReturnValue(mockWatcher)
+    jest.mocked(chokidar.watch).mockReturnValue(mockWatcher as FSWatcher)
     jest.useFakeTimers()
   })
 

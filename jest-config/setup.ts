@@ -2,6 +2,17 @@
  * MOCKS AND SPIES
  */
 
+jest.mock('chokidar', () => ({
+  __esModule: true,
+  default: {
+    add: jest.fn(),
+    close: jest.fn(),
+    on: jest.fn(),
+    unwatch: jest.fn(),
+    watch: jest.fn(),
+  },
+}))
+
 jest.mock('markdownlint', () => ({
   applyFixes: jest.fn(),
 }))
