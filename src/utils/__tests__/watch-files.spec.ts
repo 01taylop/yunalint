@@ -107,7 +107,7 @@ describe('watchFiles', () => {
         includePatterns: getIncludePatterns(mockPath),
         ignorePatterns: [],
       })
-      triggerFileEvent('add', mockPath, 'new-content', 0)
+      triggerFileEvent('add', mockPath, '', 0)
 
       jest.runAllTimers()
 
@@ -130,7 +130,7 @@ describe('watchFiles', () => {
         includePatterns: getIncludePatterns(mockPath),
         ignorePatterns: [],
       })
-      triggerFileEvent('unlink', mockPath, 'old-content', 0)
+      triggerFileEvent('unlink', mockPath, '', 0)
 
       jest.runAllTimers()
 
@@ -150,7 +150,7 @@ describe('watchFiles', () => {
         ignorePatterns: [],
       })
       triggerFileEvent('change', mockPath, 'old-content', 200)
-      triggerFileEvent('unlink', mockPath, 'old-content', 0)
+      triggerFileEvent('unlink', mockPath, '', 0)
 
       jest.runAllTimers()
 

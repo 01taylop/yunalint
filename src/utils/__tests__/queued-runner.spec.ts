@@ -3,6 +3,8 @@ import { createQueuedRunner } from '../queued-runner'
 describe('createQueuedRunner', () => {
 
   it('calls fn immediately', async () => {
+    expect.assertions(1)
+
     const fn = jest.fn().mockResolvedValue(undefined)
     const run = createQueuedRunner(fn)
 
@@ -12,6 +14,8 @@ describe('createQueuedRunner', () => {
   })
 
   it('calls fn again after the previous run completes', async () => {
+    expect.assertions(1)
+
     const fn = jest.fn().mockResolvedValue(undefined)
     const run = createQueuedRunner(fn)
 
