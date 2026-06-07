@@ -8,6 +8,7 @@ import { EVENTS, fileWatcherEvents, watchFiles } from '../watch-files'
 
 import type { FSWatcher } from 'chokidar'
 import type { FilePatterns } from '@Types/lint'
+import type { WatcherHandle } from '../watch-files'
 
 jest.mock('node:fs')
 
@@ -34,7 +35,7 @@ describe('watchFiles', () => {
 
   const triggerFileEvent = (event: 'add' | 'change' | 'unlink', path: string, content: string, debounceTime: number, error?: Error) => {
     if (event === 'change') {
-      jest.mocked(readFile).mockImplementation((_path: any, _encoding: any, callback?: (error: Error | null, data: string) => void): void => {
+      jest.mocked(readFile).mockImplementation((_path: unknown, _options: unknown, callback?: (error: Error | null, data: string) => void): void => {
         if (callback) {
           callback(error || null, content)
         }
@@ -64,15 +65,6 @@ describe('watchFiles', () => {
   afterEach(() => {
     fileWatcherEvents.removeAllListeners()
     jest.mocked(readFile).mockReset()
-  })
-
-  it('returns the watcher instance', () => {
-    const watcher = watchFiles({
-      includePatterns: getIncludePatterns(),
-      ignorePatterns: [],
-    })
-
-    expect(watcher).toBe(mockWatcher)
   })
 
   it('initialises chokidar for all linters when no specific linters are provided', () => {
@@ -115,7 +107,7 @@ describe('watchFiles', () => {
         includePatterns: getIncludePatterns(mockPath),
         ignorePatterns: [],
       })
-      triggerFileEvent('add', mockPath, 'new-content', 0)
+      triggerFileEvent('add', mockPath, '', 0)
 
       jest.runAllTimers()
 
@@ -138,7 +130,7 @@ describe('watchFiles', () => {
         includePatterns: getIncludePatterns(mockPath),
         ignorePatterns: [],
       })
-      triggerFileEvent('unlink', mockPath, 'old-content', 0)
+      triggerFileEvent('unlink', mockPath, '', 0)
 
       jest.runAllTimers()
 
@@ -158,7 +150,7 @@ describe('watchFiles', () => {
         ignorePatterns: [],
       })
       triggerFileEvent('change', mockPath, 'old-content', 200)
-      triggerFileEvent('unlink', mockPath, 'old-content', 0)
+      triggerFileEvent('unlink', mockPath, '', 0)
 
       jest.runAllTimers()
 
@@ -255,6 +247,43 @@ describe('watchFiles', () => {
         message: `File \`${mockPath}\` has been changed (content unreadable).`,
         path: mockPath,
       }])
+    })
+
+  })
+
+  describe('close', () => {
+
+    it('calls the underlying watcher close when closed', async () => {
+      expect.assertions(1)
+
+      const handle: WatcherHandle = watchFiles({
+        includePatterns: getIncludePatterns(),
+        ignorePatterns: [],
+      })
+
+      await handle.close()
+
+      expect(mockWatcher.close).toHaveBeenCalledTimes(1)
+    })
+
+    it('cancels pending change timeouts when closed', async () => {
+      expect.assertions(1)
+
+      const events = collectEvents()
+      const mockPath = 'mock/close-file.ts'
+
+      const handle: WatcherHandle = watchFiles({
+        includePatterns: getIncludePatterns(mockPath),
+        ignorePatterns: [],
+      })
+
+      triggerFileEvent('change', mockPath, 'new-content', 100)
+
+      await handle.close()
+
+      jest.runAllTimers()
+
+      expect(events).toHaveLength(0)
     })
 
   })

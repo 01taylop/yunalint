@@ -127,7 +127,7 @@ describe('colourLog', () => {
     it('logs a fallback message if error cannot be stringified', () => {
       global.debug = true
 
-      const circular: any = {}
+      const circular: Record<string, unknown> = {}
       circular.self = circular
 
       colourLog.error('An error occurred', circular)

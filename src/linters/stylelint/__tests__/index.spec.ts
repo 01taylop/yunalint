@@ -4,8 +4,8 @@ import stylelint from 'stylelint'
 
 import { colourLog } from '@Utils/colour-log'
 
-import { lintFiles } from '../lint-files'
 import { resolveConfigFile } from '../resolve-config'
+import { lintFiles } from '..'
 
 import type { LintResult } from 'stylelint'
 

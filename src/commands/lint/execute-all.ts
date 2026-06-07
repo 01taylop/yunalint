@@ -1,4 +1,4 @@
-import { executeLinter } from '@Linters/execute'
+import { executeLinter } from '@Linters/index'
 import { Linter } from '@Types/lint'
 import { colourLog } from '@Utils/colour-log'
 import { notifyResults } from '@Utils/notifier'

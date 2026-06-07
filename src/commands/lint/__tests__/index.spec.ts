@@ -1,8 +1,10 @@
 import { Command } from 'commander'
 import { ProcessSupervisor } from 'process-supervisor'
 
+import { defaultLintCommandOptions } from '@Jest/fixtures/commands'
+
 import { lintAction } from '../action'
-import { lintCommand } from '../command'
+import { lintCommand } from '..'
 
 jest.mock('../action')
 
@@ -31,18 +33,11 @@ describe('lintCommand', () => {
   })
 
   it('invokes the action handler when the command is executed', async () => {
+    expect.assertions(1)
+
     await program.parseAsync(['node', './index.ts', 'lint'])
 
-    expect(lintAction).toHaveBeenCalledWith(supervisor, expect.objectContaining({
-      fix: false,
-      watch: false,
-      emoji: '🌺',
-      title: 'Yuna',
-      cache: false,
-      clearCache: false,
-      debug: false,
-      eslintUseLegacyConfig: false,
-    }))
+    expect(lintAction).toHaveBeenCalledWith(supervisor, defaultLintCommandOptions)
   })
 
 })

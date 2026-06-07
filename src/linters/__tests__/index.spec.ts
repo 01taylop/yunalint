@@ -4,18 +4,22 @@ import { colourLog } from '@Utils/colour-log'
 import { logSummary } from '@Utils/reporting'
 import { sourceFiles } from '@Utils/source-files'
 
-import { executeLinter } from '../execute'
-import { linters } from '../linters'
+import { executeLinter } from '..'
+import * as eslint from '../eslint'
+import * as markdownlint from '../markdownlint'
+import * as stylelint from '../stylelint'
 
 jest.mock('@Utils/reporting')
 jest.mock('@Utils/source-files')
-jest.mock('../linters')
+jest.mock('../eslint')
+jest.mock('../markdownlint')
+jest.mock('../stylelint')
 
 describe.each([
-  Linter.ESLint,
-  Linter.Markdownlint,
-  Linter.Stylelint,
-])('executeLinter for %s', linter => {
+  [Linter.ESLint, eslint],
+  [Linter.Markdownlint, markdownlint],
+  [Linter.Stylelint, stylelint],
+])('executeLinter for %s', (linter, linterModule) => {
 
   const commonOptions = {
     cache: false,
@@ -28,7 +32,7 @@ describe.each([
 
   beforeEach(() => {
     jest.mocked(sourceFiles).mockResolvedValue(['file1.ts', 'file2.ts'])
-    jest.mocked(linters[linter]).lintFiles = jest.fn().mockResolvedValue(mockLintReport)
+    jest.mocked(linterModule.lintFiles).mockResolvedValue(mockLintReport)
     jest.useFakeTimers()
   })
 
@@ -57,7 +61,7 @@ describe.each([
 
     await executeLinter(linter, commonOptions)
 
-    expect(linters[linter].lintFiles).toHaveBeenCalledWith({
+    expect(linterModule.lintFiles).toHaveBeenCalledWith({
       cache: commonOptions.cache,
       eslintUseLegacyConfig: commonOptions.eslintUseLegacyConfig,
       files: ['file1.ts', 'file2.ts'],

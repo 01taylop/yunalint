@@ -15,9 +15,13 @@ interface FileChangedEventPayload {
   path: string
 }
 
+interface WatcherHandle {
+  close: () => Promise<void>
+}
+
 const fileWatcherEvents = new EventEmitter()
 
-const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?: Array<Linter>) => {
+const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?: Array<Linter>): WatcherHandle => {
   const fileHashes = new Map<string, string>()
   const pendingChanges = new Map<string, NodeJS.Timeout>()
 
@@ -87,11 +91,20 @@ const watchFiles = ({ ignorePatterns, includePatterns }: FilePatterns, linters?:
     } satisfies FileChangedEventPayload)
   })
 
-  return watcher
+  return {
+    close: async () => {
+      for (const timeout of pendingChanges.values()) {
+        clearTimeout(timeout)
+      }
+      pendingChanges.clear()
+      await watcher.close()
+    },
+  }
 }
 
 export type {
   FileChangedEventPayload,
+  WatcherHandle,
 }
 
 export {
