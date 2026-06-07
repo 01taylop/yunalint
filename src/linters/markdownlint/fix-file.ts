@@ -12,10 +12,14 @@ interface FixFileOptions {
 
 const fixFile = ({ errors, file }: FixFileOptions): void => {
   const filePath = path.join(process.cwd(), file)
-  const fileContent = readFileSync(filePath, 'utf8')
-  const fixedContent = applyFixes(fileContent, errors)
 
-  writeFileSync(filePath, fixedContent)
+  try {
+    const fileContent = readFileSync(filePath, 'utf8')
+    const fixedContent = applyFixes(fileContent, errors)
+    writeFileSync(filePath, fixedContent)
+  } catch (error) {
+    throw new Error(`Failed to fix ${file}`, { cause: error })
+  }
 }
 
 export {
