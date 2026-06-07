@@ -34,4 +34,11 @@ describe('fixFile', () => {
     expect(writeFileSync).toHaveBeenCalledWith(path.join(process.cwd(), filePath), fixedFileContent)
   })
 
+  it('throws an error if reading the file fails', () => {
+    const error = new Error('Failed to read file')
+    jest.mocked(readFileSync).mockImplementation(() => { throw error })
+
+    expect(() => fixFile({ errors: [markdownlintError], file: 'test.md' })).toThrow('Failed to fix test.md')
+  })
+
 })
