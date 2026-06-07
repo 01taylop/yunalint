@@ -55,7 +55,9 @@ afterEach(() => {
 expect.extend({
   toHaveBeenCalledOnceWith(received, ...expected) {
     const calls = received.mock.calls
-    const pass = calls.length === 1 && expected.every((arg, index) => this.equals(calls[0]?.[index], arg))
+    const pass = calls.length === 1
+      && expected.every((arg, index) => this.equals(calls[0]?.[index], arg))
+      && calls[0].length === expected.length
 
     const printExpected = this.utils.printExpected(expected)
     const printReceived = this.utils.printReceived(calls[0])
