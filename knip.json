@@ -16,7 +16,6 @@
   "entry": [
     "config/all-legacy.ts",
     "config/all.ts",
-    "config/stylelint.config.ts",
-    "src/index.ts"
+    "config/stylelint.config.ts"
   ]
 }
