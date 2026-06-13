@@ -42,11 +42,11 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Run lint
-        run: yarn lint --ignore-patterns '**/*.ts'
+      - name: Integration tests
+        run: yarn test:integration
 
-      - name: Run lint with legacy ESLint config
-        run: yarn lint --eslint-use-legacy-config --ignore-patterns '**/*.ts'
+      - name: Run lint
+        run: yarn lint --ignore-dirs integration-tests --ignore-patterns '**/*.ts'
 
       - name: Check code quality
         run: yarn knip
