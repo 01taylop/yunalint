@@ -23,6 +23,7 @@
   },
   "include": [
     "config/**/*",
+    "integration-tests/**/*",
     "jest-config/**/*",
     "src/**/*"
   ],

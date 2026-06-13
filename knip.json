@@ -16,6 +16,7 @@
   "entry": [
     "config/all-legacy.ts",
     "config/all.ts",
-    "config/stylelint.config.ts"
+    "config/stylelint.config.ts",
+    "jest.integration.config.ts"
   ]
 }
